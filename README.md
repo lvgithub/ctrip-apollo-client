@@ -62,6 +62,10 @@ log.info('get config:', config);
 **getConfig()**  获取最新的配置文件
 * Returns: `object`
 
+**getValue ({namespace,field})**  获取具体的配置字段
+* Returns: `string`
+* field `mysql.port:3306` 分号前面key,如果未配置 3306 作为默认值
+
 **onChange (callback(object))**  配置变更回调通知
 * Returns: `void`
 
