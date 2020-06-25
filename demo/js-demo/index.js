@@ -2,7 +2,7 @@ const log = require('loglevel');
 const Client = require('../../src/index');
 log.setLevel('debug');
 
-const client = new Client({
+const apollo = new Client({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
     configPath: './config/apolloConfig.json',
@@ -10,14 +10,14 @@ const client = new Client({
     logger: log
 });
 
-client.init().then(() => {
-    const mysqlHost = client.getValue({ field: 'mysql.host' });
+apollo.init().then(() => {
+    const mysqlHost = apollo.getValue({ field: 'mysql.host' });
     console.log('mysqlHost', mysqlHost);
 });
-client.onChange((config) => {
+apollo.onChange((config) => {
     console.log('config', config);
-    const mysqlPort = client.getValue({ field: 'mysql.port:3306' });
+    const mysqlPort = apollo.getValue({ field: 'mysql.port:3306' });
     console.log('mysqlPort', mysqlPort);
 });
-const config = client.getConfig();
+const config = apollo.getConfig();
 log.info('get config:', config);

@@ -1,5 +1,5 @@
 {
-  "name": "javacsript",
+  "name": "koa-demo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,11 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "debug": "^4.1.1",
-    "get-value": "^3.0.2",
-    "loglevel": "^1.6.8"
-  },
-  "devDependencies": {
-    "jest": "^26.1.0"
+    "koa": "^2.13.0"
   }
 }

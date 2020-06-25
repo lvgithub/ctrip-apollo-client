@@ -186,8 +186,14 @@ class Client {
     }
 
     getValue ({ namespace = 'application', field }) {
-        const configurations = this.apolloConfig[namespace].configurations;
         const [value, defaultValue] = field.split(':');
+        if (!this.apolloConfig[namespace]) {
+            return defaultValue;
+        }
+        if (!this.apolloConfig[namespace].configurations) {
+            return defaultValue;
+        }
+        const configurations = this.apolloConfig[namespace].configurations;
         const data = get(configurations, value);
 
         return data || defaultValue;
