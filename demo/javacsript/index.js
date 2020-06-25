@@ -9,9 +9,15 @@ const client = new Client({
     namespaceList: ['application', 'development.qa'],
     logger: log
 });
-client.init();
+
+client.init().then(() => {
+    const mysqlHost = client.getValue({ field: 'mysql.host' });
+    console.log('mysqlHost', mysqlHost);
+});
 client.onChange((config) => {
-    log.info('config update:', config);
+    console.log('config', config);
+    const mysqlPort = client.getValue({ field: 'mysql.port:3306' });
+    console.log('mysqlPort', mysqlPort);
 });
 const config = client.getConfig();
 log.info('get config:', config);

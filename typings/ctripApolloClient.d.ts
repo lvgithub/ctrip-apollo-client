@@ -1,17 +1,22 @@
+interface StringArray {
+    [index: number]: string;
+}
 interface Option {
     configServerUrl: string
     appId: string
     configPath?: string
-    namespaceList?: [string]
+    namespaceList?: StringArray
     logger?: object
 }
 declare class CtripApplloClient {
-    constructor(option: Option) {
-
-    }
-    init(): Promise<Any>
-    getConfig(): Promise<Any>
-    onChange(callback: (obj: Any) => void): void
+    constructor(option: Option)
+    init(): Promise<any>
+    getConfig(): Promise<any>
+    getValue(option: {
+        namespace?: string
+        field: string
+    }): string
+    onChange(callback: (obj: any) => void): void
 }
 
-export = ctripApplloClient;
+export = CtripApplloClient;

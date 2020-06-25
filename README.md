@@ -64,6 +64,7 @@ log.info('get config:', config);
 
 **getValue ({namespace,field})**  获取具体的配置字段
 * Returns: `string`
+* namespace 默认值: `application`
 * field `mysql.port:3306` 分号前面key,如果未配置 3306 作为默认值
 
 **onChange (callback(object))**  配置变更回调通知

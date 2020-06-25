@@ -7,9 +7,14 @@ const client = new CtripApplloClient({
     namespaceList: ['application', 'development.qa']
 });
 
-client.init().then(config => {
-    console.log(config)
+client.init().then(() => {
+    const mysqlHost = client.getValue({ field: 'mysql.host' });
+    console.log('mysqlHost', mysqlHost);
 })
 client.onChange((config) => {
-    console.log(config)
+    console.log('config', config)
+    const mysqlPort = client.getValue({ field: 'mysql.port:3306' });
+    console.log('mysqlPort', mysqlPort);
 })
+
+
