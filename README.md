@@ -21,11 +21,11 @@ apollo 服务端测试环境:
 ## Usage
 ```
 const log = require('loglevel');
-const ApolloClient = require('ctrip-apollo-client');
+const Client = require('../../src/index');
 log.setLevel('debug');
 
-// 创建一个客户端实例
-const client = new Client({
+// 初始化客户端
+const apollo = new Client({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
     configPath: './config/apolloConfig.json',
@@ -34,16 +34,22 @@ const client = new Client({
 });
 
 // 初始化配置
-client.init();
-
-// 监控配置更新
-client.onChange((config) => {
-    log.info('config update:', config);
+apollo.init().then(() => {
+    const mysqlHost = apollo.getValue({ field: 'mysql.host' });
+    console.log('mysqlHost', mysqlHost);
 });
 
-// 获取配置
-const config = client.getConfig();
+// 监控配置变更
+apollo.onChange((config) => {
+    console.log('config', config);
+    const mysqlPort = apollo.getValue({ field: 'mysql.port:3306' });
+    console.log('mysqlPort', mysqlPort);
+});
+
+// 获取所有配置
+const config = apollo.getConfig();
 log.info('get config:', config);
+
 ```
 ## API
 **new ApolloClient(options)** 构造函数
@@ -55,17 +61,26 @@ log.info('get config:', config);
     * **namespaceList** `array` Namespace的名字,默认值:`[application]`
     * **configPath** `string` 本地配置文件路径 默认值`./config/apolloConfig.json`
     * **logger** `object` 日志类 必须实现 `logger.info()`,`logger.error()` 两个方法
-
 **init()** 拉取所有配置到本地，并且写入配置文件中
 * Returns: `promise`
 
 **getConfig()**  获取最新的配置文件
 * Returns: `object`
+```
+const config = apollo.getConfig();
+```
 
 **getValue ({namespace,field})**  获取具体的配置字段
 * Returns: `string`
 * namespace 默认值: `application`
 * field `mysql.port:3306` 分号前面key,如果未配置 3306 作为默认值
+```
+class User {
+    get userName () {
+        return apollo.getValue({ field: 'user.name:liuwei' });
+    }
+}
+```
 
 **onChange (callback(object))**  配置变更回调通知
 * Returns: `void`
