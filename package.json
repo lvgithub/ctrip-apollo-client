@@ -1,0 +1,35 @@
+{
+  "name": "ctrip-apollo-client",
+  "version": "1.0.0",
+  "description": "本项目为携程配置中心框架 Apollo 提供的Node.js版本客户端。",
+  "main": "src/index.js",
+  "types": "./typings/ctripApolloClient.d.ts",
+  "scripts": {
+    "debug": "DEBUG=apollo-client node src/test/index.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "liuwei",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bluebird": "^3.7.2",
+    "get-value": "^3.0.2",
+    "internal-ip": "^6.0.0",
+    "set-value": "^3.0.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
+    "@typescript-eslint/parser": "^3.3.0",
+    "debug": "^4.1.1",
+    "eslint": "^7.3.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "loglevel": "^1.6.8"
+  }
+}
