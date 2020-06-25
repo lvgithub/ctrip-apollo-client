@@ -85,6 +85,63 @@ class User {
 **onChange (callback(object))**  配置变更回调通知
 * Returns: `void`
 
+## with koa
+```
+
+const Client = require('../../src/index');
+const Koa = require('koa');
+const app = new Koa();
+
+const apollo = new Client({
+    configServerUrl: 'http://106.54.227.205:8080',
+    appId: 'apolloclient',
+    configPath: './config/apolloConfig.json',
+    namespaceList: ['application', 'development.qa']
+});
+
+class User {
+    get userName () {
+        return apollo.getValue({ field: 'user.name:liuwei' });
+    }
+}
+
+const run = async () => {
+    await apollo.init();
+    const user = new User();
+
+    app.use(async ctx => {
+        // 配置变更后，会自动同步
+        ctx.body = user.userName;
+    });
+    app.listen(3000);
+};
+run();
+```
+
+## with typescript
+```
+import CtripApplloClient from 'ctrip-apollo-client';
+
+const apollo = new CtripApplloClient({
+    configServerUrl: 'http://106.54.227.205:8080',
+    appId: 'apolloclient',
+    configPath: './config/apolloConfig.json',
+    namespaceList: ['application', 'development.qa']
+});
+
+apollo.init().then(() => {
+    const mysqlHost = apollo.getValue({ field: 'mysql.host' });
+    console.log('mysqlHost', mysqlHost);
+})
+apollo.onChange((config) => {
+    console.log('config', config)
+    const mysqlPort = apollo.getValue({ field: 'mysql.port:3306' });
+    console.log('mysqlPort', mysqlPort);
+})
+
+```
+更多案例请参考 `example` 目录
+
 ## License
 
 [MIT](LICENSE)
