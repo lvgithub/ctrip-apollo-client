@@ -81,6 +81,14 @@ class User {
     }
 }
 ```
+**hotValue ({namespace,field})**  获取具体的配置字段，封装 `getter`(热更新)
+* Returns: `{value}` 
+* namespace 默认值: `application`
+* field `mysql.port:3306` 分号前面key,如果未配置 3306 作为默认值
+```
+const userName = apollo.hotValue({ field: 'user.name:liuwei' });
+console.log(userName.value);
+```
 
 **onChange (callback(object))**  配置变更回调通知
 * Returns: `void`

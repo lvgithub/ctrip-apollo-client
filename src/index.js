@@ -198,6 +198,16 @@ class Client {
 
         return data || defaultValue;
     }
+
+    // 通过 getter 实现获取最新配置
+    hotValue ({ namespace = 'application', field }) {
+        const that = this;
+        return new class Value {
+            get value () {
+                return that.getValue({ namespace, field });
+            }
+        }();
+    }
 }
 
 module.exports = Client;

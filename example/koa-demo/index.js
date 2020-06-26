@@ -16,13 +16,19 @@ class User {
     }
 }
 
+// 支持热更新
+const userSex = apollo.hotValue({ field: 'user.sex:man' });
+
 const run = async () => {
     await apollo.init();
     const user = new User();
 
     app.use(async ctx => {
         // 配置变更后，会自动同步
-        ctx.body = user.userName;
+        ctx.body = {
+            name: user.userName,
+            sex: userSex.value
+        };
     });
     app.listen(3000);
 };
