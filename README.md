@@ -78,7 +78,14 @@ run();
 **init()** 拉取所有配置到本地，并且写入配置文件中
 * returns: `promise`
 
+**init()** 初始化配置中心，拉取远端配置到端上，并且缓存一份到文件中，同时开启配置变更监听器来实时同步配置，如果拉取超过 timeoutMs ，或者发生异常，则读取本地缓存的配置文件。如果本地没有缓存配置文件，抛出异常。
+
+* timeoutMs
+
+return: Promise<void>
+
 **getConfig()**  获取最新的配置文件
+
 * returns: `object`
 ```
 const config = apollo.getConfig();
