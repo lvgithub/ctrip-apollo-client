@@ -59,6 +59,8 @@ class Client {
             debug('polling count:', pollingCount++);
             this.polling();
         }, 2000);
+
+        global._apollo = this;
     }
 
     // 从缓存中拉取配置文件
@@ -185,7 +187,7 @@ class Client {
         });
     }
 
-    getValue ({ namespace = 'application', field }) {
+    getValue (field, namespace = 'application') {
         const [value, defaultValue] = field.split(':');
         if (!this.apolloConfig[namespace]) {
             return defaultValue;
@@ -200,14 +202,43 @@ class Client {
     }
 
     // 通过 getter 实现获取最新配置
-    hotValue ({ namespace = 'application', field }) {
+    hotValue (field, namespace = 'application') {
         const that = this;
         return new class Value {
             get value () {
-                return that.getValue({ namespace, field });
+                return that.getValue(field, namespace);
             }
         }();
     }
+
+    withValue (target, key, field, namespace = 'application') {
+        if (delete target[key]) {
+            Object.defineProperty(target, key, {
+                get: () => {
+                    return global._apollo.getValue(field, namespace);
+                },
+                set: () => {
+                    return global._apollo.getValue(field, namespace);
+                },
+                enumerable: true,
+                configurable: true
+            });
+        }
+    }
+
+    static value (field, namespace) {
+        return function (target, key) {
+            delete target[key];
+            Object.defineProperty(target, key, {
+                get: function () {
+                    return global._apollo.getValue({ namespace, field });
+                },
+                enumerable: true,
+                configurable: true
+            });
+        };
+    }
 }
 
-module.exports = Client;
+exports.CtripApplloClient = Client;
+exports.value = Client.value;

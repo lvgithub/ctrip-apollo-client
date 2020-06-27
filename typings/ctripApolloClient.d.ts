@@ -8,8 +8,10 @@ interface Option {
     namespaceList?: StringArray
     logger?: object
 }
-declare class CtripApplloClient {
+
+export declare class CtripApplloClient {
     constructor(option: Option)
+    static value(field: string, namespace?: string)
     init(): Promise<any>
     getConfig(): Promise<any>
     getValue(option: {
@@ -19,4 +21,4 @@ declare class CtripApplloClient {
     onChange(callback: (obj: any) => void): void
 }
 
-export = CtripApplloClient;
+export function value(field: string, namespace?: string)

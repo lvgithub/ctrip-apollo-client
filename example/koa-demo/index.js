@@ -1,18 +1,20 @@
 
-const Client = require('../../src/index');
+const { CtripApplloClient } = require('../../src/index');
 const Koa = require('koa');
 const app = new Koa();
 
-const apollo = new Client({
+const apollo = new CtripApplloClient({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
     configPath: './config/apolloConfig.json',
     namespaceList: ['application', 'development.qa']
 });
 
+const withValue = apollo.withValue;
+
 class User {
-    get userName () {
-        return apollo.getValue({ field: 'user.name:liuwei' });
+    constructor () {
+        withValue(this, 'userId', { field: 'user.id:10071' });
     }
 }
 
@@ -26,6 +28,7 @@ const run = async () => {
     app.use(async ctx => {
         // 配置变更后，会自动同步
         ctx.body = {
+            userId: user.userId,
             name: user.userName,
             sex: userSex.value
         };

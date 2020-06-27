@@ -1,4 +1,4 @@
-import CtripApplloClient from 'ctrip-apollo-client';
+import { CtripApplloClient, value } from 'ctrip-apollo-client';
 
 const apollo = new CtripApplloClient({
     configServerUrl: 'http://106.54.227.205:8080',
@@ -7,14 +7,25 @@ const apollo = new CtripApplloClient({
     namespaceList: ['application', 'development.qa']
 });
 
+// 初始化配置中心
 apollo.init().then(() => {
-    const mysqlHost = apollo.getValue({ field: 'mysql.host' });
-    console.log('mysqlHost', mysqlHost);
-})
+    const mysqlHost = apollo.getValue({ field: 'mysql.host:3306' });
+    class User {
+        @value("user.name:liuwei")
+        public name: string
+    }
+
+    setInterval(() => {
+        const user = new User();
+        // 如果配置 user.name 更新，会自动同步更新 user.name 的值
+        console.log('user.name', user.name);
+    }, 1000)
+});
+
 apollo.onChange((config) => {
-    console.log('config', config)
-    const mysqlPort = apollo.getValue({ field: 'mysql.port:3306' });
-    console.log('mysqlPort', mysqlPort);
+    // console.log('config change', config);
 })
+
+
 
 

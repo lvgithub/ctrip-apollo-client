@@ -1,9 +1,9 @@
 const log = require('loglevel');
-const Client = require('../../src/index');
+const { CtripApplloClient } = require('../../src/index');
 log.setLevel('debug');
 
 // 初始化客户端
-const apollo = new Client({
+const apollo = new CtripApplloClient({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
     configPath: './config/apolloConfig.json',
