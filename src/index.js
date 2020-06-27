@@ -7,6 +7,8 @@ const path = require('path')
 const internalIp = require('internal-ip')
 
 const logPreStr = 'apollo-client: '
+
+const sleep = ms => new Promise(resolve => setTimeout(() => resolve(), ms))
 class Client {
   constructor (option) {
     const {
@@ -48,7 +50,12 @@ class Client {
 
     // 实现long http polling
     this.polling = async () => {
-      await this.pollingNotification()
+      try {
+        await this.pollingNotification()
+      } catch (error) {
+        this.error('polling error:', error)
+        await sleep(1000)
+      }
       this.polling()
     }
 
@@ -111,6 +118,7 @@ class Client {
         config[item.namespace] = res.data
       } catch (error) {
         debug('fetchConfigFromDb error:', error.message)
+        throw new Error('fetchConfigFromDb error')
       }
     }
     // this.apolloConfig = config;
@@ -175,12 +183,18 @@ class Client {
     fs.writeFileSync(configPath, JSON.stringify(configObj))
     this.info('write apollo config File Sync end')
   }
-
+  // 读取本地配置文件
+  readConfig () {}
   // 拉取所有配置到本地
   async init () {
-    const ip = await internalIp.v4()
-    this.clientIp = ip
-    await this.fetchConfigFromDb()
+    try {
+      const ip = await internalIp.v4()
+      this.clientIp = ip
+      await this.fetchConfigFromDb()
+    } catch (error) {
+      //初始化失败，恢复本地配置文件
+      this.apolloConfig = this.readConfig()
+    }
   }
 
   getConfig () {
