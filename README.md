@@ -17,6 +17,9 @@ apollo 服务端测试环境:
 * 支持 TypeScript
 
 ## Usage
+
+* [typescript demo](./example/ts-demo/index.ts)
+
 ```typescript
 import { CtripApplloClient, value, hotValue } from 'ctrip-apollo-client';
 import Koa from 'koa';
@@ -59,7 +62,10 @@ const run = async () => {
 }
 run();
 ```
+[javascript demo 请点击链接](./example/js-demo/index.js)
+
 ## API
+
 **ApolloClient(options)** 构造函数
 * returns: `apolloClient`
 * options
