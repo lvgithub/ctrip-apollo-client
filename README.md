@@ -17,37 +17,47 @@ apollo 服务端测试环境:
 * 支持 TypeScript
 
 ## Usage
-```javascript
-const log = require('loglevel');
-const Client = require('../../src/index');
-log.setLevel('debug');
+```typescript
+import { CtripApplloClient, value, hotValue } from 'ctrip-apollo-client';
+import Koa from 'koa';
 
-// 初始化客户端
-const apollo = new Client({
+const apollo = new CtripApplloClient({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
     configPath: './config/apolloConfig.json',
-    namespaceList: ['application', 'development.qa'],
-    logger: log
+    namespaceList: ['application', 'development.qa']
 });
+const app = new Koa();
 
-// 初始化配置
-apollo.init().then(() => {
-    const mysqlHost = apollo.getValue({ field: 'mysql.host' });
-    console.log('mysqlHost', mysqlHost);
-});
+const run = async () => {
+    // 初始化配置
+    await apollo.init();
 
-// 监控配置变更
-apollo.onChange((config) => {
-    console.log('config', config);
-    const mysqlPort = apollo.getValue({ field: 'mysql.port:3306' });
-    console.log('mysqlPort', mysqlPort);
-});
+    // 获取的配置，不会热更新
+    const port = apollo.getValue('app.port:3000');
+    // 获取配置，支持热更新，需要通过 appName.value 获取最终值
+    const appName = hotValue('app.name:apollo-demo');
 
-// 获取所有配置
-const config = apollo.getConfig();
-log.info('get config:', config);
+    class User {
+        // 通过装饰器注入，支持热更新
+        // 只能注入类的属性
+        @value("user.name:liuwei")
+        public name: string
+    }
+    const user = new User();
 
+    app.use(async (ctx, next) => {
+        ctx.body = {
+            appName: appName.value,
+            userName: user.name
+        }
+        await next();
+    })
+    app.listen(port);
+    console.log('listening on port:', port);
+    console.info(`curl --location --request GET \'http://localhost:${port}\' `);
+}
+run();
 ```
 ## API
 **ApolloClient(options)** 构造函数
@@ -109,7 +119,7 @@ new User().userId
 **onChange (callback(object))**  配置变更回调通知
 * returns: `void`
 
-**value(field, namespace)** 注入器
+**value(field, namespace)** 注入器，只能注入类的属性
 
 * field `string` 字段属性
 * namespace `string`

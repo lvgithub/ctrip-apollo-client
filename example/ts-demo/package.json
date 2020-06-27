@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ctrip-apollo-client": "file:../.."
+    "@types/koa": "^2.11.3",
+    "ctrip-apollo-client": "file:../..",
+    "koa": "^2.13.0"
   }
 }

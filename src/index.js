@@ -8,7 +8,7 @@ const internalIp = require('internal-ip');
 
 const logPreStr = 'apollo-client: ';
 class Client {
-    constructor (option) {
+    constructor(option) {
         const {
             configServerUrl,
             appId,
@@ -64,7 +64,7 @@ class Client {
     }
 
     // 从缓存中拉取配置文件
-    async fetchConfigFromCache () {
+    async fetchConfigFromCache() {
         const urlList = [];
         const config = {};
         this.namespaceList.map(namespace => {
@@ -82,7 +82,7 @@ class Client {
     }
 
     // 根据namespace拉取配置文件
-    async fetchConfigFromDbByNamespace (namespace) {
+    async fetchConfigFromDbByNamespace(namespace) {
         const config = this.getConfig();
         const releaseKey = config && config[namespace] && config[namespace].releaseKey;
         const url = `${this.configServerUrl}/configs/${this.appId}/${this.clusterName}/${namespace}?releaseKey=${releaseKey}&ip=${this.clientIp}`;
@@ -97,7 +97,7 @@ class Client {
     }
 
     // 拉取全量配置
-    async fetchConfigFromDb () {
+    async fetchConfigFromDb() {
         const urlList = [];
         const config = {};
         this.namespaceList.map(namespace => {
@@ -117,7 +117,7 @@ class Client {
     }
 
     // 监控配置文件变更
-    async pollingNotification () {
+    async pollingNotification() {
         this.info('pollingNotification start');
         const notifications = JSON.stringify(Object.keys(this.notifications).map(namespace => {
             return { namespaceName: namespace, notificationId: this.notifications[namespace] };
@@ -139,7 +139,7 @@ class Client {
     }
 
     // 写入配置文件到磁盘
-    async saveConfig (configObj) {
+    async saveConfig(configObj) {
         // const configObj = this.apolloConfig;
         const configPath = this.configPath;
         const dirStr = path.dirname(configPath);
@@ -170,24 +170,24 @@ class Client {
         this.info('write apollo config File Sync end');
     }
 
-    getConfig () {
+    getConfig() {
         this.info('getConfig: ', JSON.stringify(this.apolloConfig));
         return this.apolloConfig;
     }
 
-    onChange (cb) {
+    onChange(cb) {
         this.onPolling = cb;
     }
 
     // 拉取所有配置到本地
-    init () {
+    init() {
         return internalIp.v4().then(clientIp => {
             this.clientIp = clientIp;
             return this.fetchConfigFromDb();
         });
     }
 
-    getValue (field, namespace = 'application') {
+    getValue(field, namespace = 'application') {
         const [value, defaultValue] = field.split(':');
         if (!this.apolloConfig[namespace]) {
             return defaultValue;
@@ -202,16 +202,15 @@ class Client {
     }
 
     // 通过 getter 实现获取最新配置
-    hotValue (field, namespace = 'application') {
-        const that = this;
+    hotValue(field, namespace = 'application') {
         return new class Value {
-            get value () {
-                return that.getValue(field, namespace);
+            get value() {
+                return global._apollo.getValue(field, namespace);
             }
         }();
     }
 
-    withValue (target, key, field, namespace = 'application') {
+    withValue(target, key, field, namespace = 'application') {
         if (delete target[key]) {
             Object.defineProperty(target, key, {
                 get: () => {
@@ -226,7 +225,7 @@ class Client {
         }
     }
 
-    static value (field, namespace) {
+    static value(field, namespace) {
         return function (target, key) {
             delete target[key];
             Object.defineProperty(target, key, {
@@ -238,7 +237,15 @@ class Client {
             });
         };
     }
+    static hotValue(field, namespace = 'application') { 
+        return global._apollo.hotValue(field, namespace);
+    }
+    static withValue(target, key, field, namespace = 'application') { 
+        return global._apollo.withValue(target, key, field, namespace);
+    }
 }
 
 exports.CtripApplloClient = Client;
 exports.value = Client.value;
+exports.hotValue = Client.hotValue;
+exports.withValue = Client.withValue;
