@@ -231,7 +231,7 @@ class Client {
             delete target[key];
             Object.defineProperty(target, key, {
                 get: function () {
-                    return global._apollo.getValue({ namespace, field });
+                    return global._apollo.getValue(field, namespace);
                 },
                 enumerable: true,
                 configurable: true
