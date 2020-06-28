@@ -1,8 +1,8 @@
 const { CtripApplloClient } = require('../index')
 const client = new CtripApplloClient({
     configServerUrl: 'http://106.54.227.205:8080',
-    appId: 'apolloclient'
-    // configPath: './config/apolloConfig.json'
+    appId: 'apolloclient',
+    configPath: './config/apolloConfig.json'
 })
 test('test getValue,getConfigs', () => {
     const config = {
@@ -35,7 +35,7 @@ test('test hotValue', () => {
 
 test('test withValue', () => {
     class User {
-        constructor () {
+        constructor() {
             client.withValue(this, 'userId', 'user.id:10071')
         }
     }
@@ -44,7 +44,7 @@ test('test withValue', () => {
 })
 
 test('test readConfigsFromFile', async () => {
-    await client.init()
+    // await client.init()
 
     // client.readConfigsFromFile()
 })
