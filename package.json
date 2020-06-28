@@ -14,7 +14,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bluebird": "^3.7.2",
-    "get-value": "^3.0.2",
+    "get-value": "^3.0.1",
     "internal-ip": "^6.0.0",
     "set-value": "^3.0.2"
   },
