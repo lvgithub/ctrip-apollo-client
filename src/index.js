@@ -1,4 +1,5 @@
 const axios = require('./utils').axios
+const Promise = require('bluebird')
 const debug = require('debug')('apollo-client')
 const set = require('set-value')
 const get = require('get-value')
@@ -9,6 +10,7 @@ const internalIp = require('internal-ip')
 const logPreStr = 'apollo-client: '
 
 const sleep = ms => new Promise(resolve => setTimeout(() => resolve(), ms))
+const reject = ms => new Promise((resolve, reject) => setTimeout(() => reject(new Error('request time out')), ms))
 class Client {
     constructor (option) {
         const {
@@ -17,10 +19,12 @@ class Client {
             clusterName,
             namespaceList,
             configPath,
-            // pollingIntervalMs,
+            initTimeoutMs,
             onChange,
             logger
         } = option
+        // 初始化超时
+        this.initTimeoutMs = initTimeoutMs || 10000
         // 有配置更新回调
         this.onPolling = onChange
         // this.pollingIntervalMs = pollingIntervalMs || 1000 * 60;
@@ -153,7 +157,7 @@ class Client {
     }
 
     // 写入配置文件到磁盘
-    async saveConfigsToFile (configObj) {
+    saveConfigsToFile (configObj) {
         // const configObj = this.apolloConfig;
         const configPath = this.configPath
         const dirStr = path.dirname(configPath)
@@ -187,18 +191,25 @@ class Client {
     // 读取本地配置文件
     readConfigsFromFile () {
         const configPath = this.configPath
-        const fileStr = fs.readFileSync(configPath)
-        if (!fileStr) {
+        const fileBuf = fs.readFileSync(configPath)
+
+        if (fileBuf <= 0) {
             throw new Error('拉取本地文件错误')
         }
+        const configStr = fileBuf.toString()
+        const configObj = JSON.parse(configStr)
+        return configObj
     }
 
     // 拉取所有配置到本地
-    async init () {
+    async init (initTimeoutMs) {
         try {
             const ip = await internalIp.v4()
             this.clientIp = ip
-            await this.fetchConfigFromDb()
+            await Promise.race([
+                this.fetchConfigFromDb(),
+                reject(initTimeoutMs || this.initTimeoutMs)
+            ])
         } catch (error) {
             // 初始化失败，恢复本地配置文件
             this.apolloConfig = this.readConfigsFromFile()

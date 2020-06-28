@@ -35,7 +35,7 @@ test('test hotValue', () => {
 
 test('test withValue', () => {
     class User {
-        constructor() {
+        constructor () {
             client.withValue(this, 'userId', 'user.id:10071')
         }
     }
@@ -44,9 +44,13 @@ test('test withValue', () => {
 })
 
 test('test readConfigsFromFile', async () => {
-    // await client.init()
+    await client.init(2000)
+    const config = client.readConfigsFromFile()
+    expect(config.application).toBeTruthy()
+    // console.log('config', JSON.stringify(config))
+    // console.log('config', JSON.stringify(client.apolloConfig))
 
-    // client.readConfigsFromFile()
+    expect(config).toEqual(client.apolloConfig)
 })
 
 // test('test static value', () => {
