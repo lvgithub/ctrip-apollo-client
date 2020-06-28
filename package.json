@@ -6,7 +6,7 @@
   "types": "./typings/ctripApolloClient.d.ts",
   "scripts": {
     "debug": "DEBUG=apollo-client node src/test/index.js",
-    "test": "jest"
+    "test": "jest  --forceExit"
   },
   "keywords": [],
   "author": "liuwei",
@@ -31,5 +31,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "loglevel": "^1.6.8"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
