@@ -1,6 +1,6 @@
 const axios = require('./utils').axios
 const Promise = require('bluebird')
-const debug = require('debug')('apollo-client')
+const debug = require('debug')('ctrip-apollo-client')
 const set = require('set-value')
 const get = require('get-value')
 const fs = require('fs')
@@ -53,25 +53,37 @@ class Client {
         })
 
         // 实现long http polling
-        this.polling = async () => {
+        // 递归害怕长时间运行有爆栈的危险
+        // this.polling = async () => {
+        //     try {
+        //         await this.pollingNotification()
+        //     } catch (error) {
+        //         this.error('polling error:', error)
+        //         await sleep(1000)
+        //     }
+        //     this.polling()
+        // }
+
+        // timeOut 是为了等待取得clientIp
+        // 因为第一次notifications.id 默认值为-1 所以本函数也是初始化配置的地方
+        setTimeout(() => {
+            this.polling()
+        }, 2000)
+
+        global._apollo = this
+    }
+
+    async polling () {
+        let pollingCount = 1
+        while (true) {
+            this.info('polling count:', pollingCount++)
             try {
                 await this.pollingNotification()
             } catch (error) {
                 this.error('polling error:', error)
                 await sleep(1000)
             }
-            this.polling()
         }
-
-        let pollingCount = 1
-        // timeOut 是为了等待取得clientIp
-        // 因为第一次notifications.id 默认值为-1 所以本函数也是初始化配置的地方
-        setTimeout(() => {
-            debug('polling count:', pollingCount++)
-            this.polling()
-        }, 2000)
-
-        global._apollo = this
     }
 
     // 从缓存中拉取配置文件
