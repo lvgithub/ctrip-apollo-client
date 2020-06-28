@@ -238,7 +238,7 @@ class Client {
     }
 
     getValue (field, namespace = 'application') {
-        const [value, defaultValue] = field.split(':')
+        const [key, defaultValue] = field.split(':')
         if (!this.apolloConfig[namespace]) {
             return defaultValue
         }
@@ -246,7 +246,7 @@ class Client {
             return defaultValue
         }
         const configurations = this.apolloConfig[namespace].configurations
-        const data = get(configurations, value)
+        const data = get(configurations, key)
 
         return data || defaultValue
     }
