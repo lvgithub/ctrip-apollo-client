@@ -1,6 +1,6 @@
 {
   "name": "ctrip-apollo-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "本项目为携程配置中心框架 Apollo 提供的Node.js版本客户端。",
   "main": "src/index.js",
   "types": "./typings/ctripApolloClient.d.ts",
