@@ -1,13 +1,16 @@
 module.exports = {
     env: {
+        browser: true,
         commonjs: true,
         es6: true,
         node: true
     },
-    extends: ['standard'],
+    extends: [
+        'standard'
+    ],
     globals: {
-        test: true,
-        expect: true
+        Atomics: 'readonly',
+        SharedArrayBuffer: 'readonly'
     },
     parserOptions: {
         ecmaVersion: 11
@@ -19,7 +22,6 @@ module.exports = {
             {
                 SwitchCase: 1
             }
-        ],
-        semi: ['error', 'always']
+        ]
     }
-};
+}
