@@ -4,7 +4,7 @@ const client = new CtripApplloClient({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient'
 });
-test('test getValue,getConfig', () => {
+test('test getValue,getConfigs', () => {
     const config = {
         application: {
             appId: 'apolloclient',
@@ -18,7 +18,7 @@ test('test getValue,getConfig', () => {
         }
     };
     client.apolloConfig = config;
-    expect(JSON.stringify(client.getConfig())).toBe(JSON.stringify(config));
+    expect(JSON.stringify(client.getConfigs())).toBe(JSON.stringify(config));
     expect(client.getValue('mysql.port:3306')).toBe(3306);
     expect(client.getValue('mysql.host:127.0.0.1')).toBe('127.0.0.1');
 });

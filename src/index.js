@@ -90,7 +90,7 @@ class Client {
 
   // 根据namespace拉取配置文件
   async fetchConfigFromDbByNamespace (namespace) {
-    const config = this.getConfig()
+    const config = this.getConfigs()
     const releaseKey =
       config && config[namespace] && config[namespace].releaseKey
     const url = `${this.configServerUrl}/configs/${this.appId}/${this.clusterName}/${namespace}?releaseKey=${releaseKey}&ip=${this.clientIp}`
@@ -101,7 +101,7 @@ class Client {
       this.error('fetchConfigFromDbByNamespace error:', error.message)
     }
     // this.apolloConfig = config;
-    this.saveConfig(config)
+    this.saveConfigsToFile(config)
   }
 
   // 拉取全量配置
@@ -122,7 +122,7 @@ class Client {
       }
     }
     // this.apolloConfig = config;
-    this.saveConfig(config)
+    this.saveConfigsToFile(config)
   }
 
   // 监控配置文件变更
@@ -153,7 +153,7 @@ class Client {
   }
 
   // 写入配置文件到磁盘
-  async saveConfig (configObj) {
+  async saveConfigsToFile (configObj) {
     // const configObj = this.apolloConfig;
     const configPath = this.configPath
     const dirStr = path.dirname(configPath)
@@ -197,8 +197,8 @@ class Client {
     }
   }
 
-  getConfig () {
-    this.info('getConfig: ', JSON.stringify(this.apolloConfig))
+  getConfigs () {
+    this.info('getConfigs: ', JSON.stringify(this.apolloConfig))
     return this.apolloConfig
   }
 

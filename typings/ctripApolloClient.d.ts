@@ -19,7 +19,7 @@ export declare class CtripApplloClient {
     static withValue(target: any, key: string, field: string, namespace?: string)
     withValue(target: any, key: string, field: string, namespace?: string)
     init(): Promise<any>
-    getConfig(): Promise<any>
+    getConfigs(): Promise<any>
     getValue(field: string, namespace?: string): string
     onChange(callback: (obj: any) => void): void
 }

@@ -84,11 +84,11 @@ run();
 
 return: Promise<void>
 
-**getConfig()**  获取最新的配置文件
+**getConfigs()**  获取最新的配置文件
 
 * returns: `object`
 ```
-const config = apollo.getConfig();
+const config = apollo.getConfigs();
 ```
 
 **getValue (namespace = 'application')**  获取具体的配置字段

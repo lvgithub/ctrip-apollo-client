@@ -25,7 +25,7 @@ apollo.init().then(() => {
     }
   }
   // 获取所有配置
-  const config = apollo.getConfig()
+  const config = apollo.getConfigs()
 })
 
 // 监控配置变更
