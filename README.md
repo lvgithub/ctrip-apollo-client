@@ -144,11 +144,16 @@ class User {
 }
 ```
 ## Benchmark
- **一次性注入** [localValue] x **736,896,802** ops/sec ±1.49% (82 runs sampled)
- **支持热更新** [hotValue] x **2,021,310** ops/sec ±1.28% (87 runs sampled)
- **热更新默认值** [hotValue default] x **1,581,645** ops/sec ±0.89% (87 runs sampled)
- **装饰器注入**  [decorator] x **2,161,312** ops/sec ±0.96% (87 runs sampled)
+**一次性注入** [localValue] x **736,896,802** ops/sec ±1.49% (82 runs sampled)
+
+**支持热更新** [hotValue] x **2,021,310** ops/sec ±1.28% (87 runs sampled)
+
+**热更新默认值** [hotValue default] x **1,581,645** ops/sec ±0.89% (87 runs sampled)
+
+**装饰器注入**  [decorator] x **2,161,312** ops/sec ±0.96% (87 runs sampled)
+
 **原生访问** [dot] x **704,644,395** ops/sec ±1.45% (82 runs sampled)
+
 Fastest is [localValue]
 
 
