@@ -1,6 +1,6 @@
 
 
-## 背景
+项目会随着业务使用的场景不断维护迭代，如果有兴趣，可以 watch 持续关注哦 
 
 ## Introduction
 
@@ -33,7 +33,8 @@ npm i ctrip-apollo-client
 
 * 本demo 已经在测试环境创建项目  apolloclient，大家可以直接在本地测试；
 * 在配置中心修改user.name值后，无需重启，再次请求，会自动取到最新的值；
-* [demo 源码](./example/ts-demo/index.ts)。
+* 如想体验建议下载demo运行[源码](./example/ts-demo/index.ts)（TypeScript）;
+* JS版本demo [源码](./example/js-demo/index.js)
 
 ```typescript
 import { CtripApplloClient, value, hotValue } from 'ctrip-apollo-client';
@@ -94,6 +95,7 @@ run();
 
     
     
+
 **init(timeoutMs)** 
 初始化配置中心，拉取远端配置到端上，并且缓存一份到文件中，同时开启`HTTP Long Polling`来实时监控配置，如果拉取超过 timeoutMs ，或者发生异常，则读取本地缓存的配置文件。如果本地没有缓存配置文件，抛出异常。
 * return: Promise<void>   
