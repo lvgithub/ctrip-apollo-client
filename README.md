@@ -31,7 +31,9 @@ npm i ctrip-apollo-client
 ```
 ## Usage
 
-* [typescript demo](./example/ts-demo/index.ts)
+* 本demo 已经在测试环境创建项目  apolloclient，大家可以直接在本地测试；
+* 在配置中心修改user.name值后，无需重启，再次请求，会自动取到最新的值；
+* [demo 源码](./example/ts-demo/index.ts)。
 
 ```typescript
 import { CtripApplloClient, value, hotValue } from 'ctrip-apollo-client';
