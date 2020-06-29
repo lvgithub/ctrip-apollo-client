@@ -16,6 +16,10 @@ apollo 服务端测试环境:
 * 灰度发布
 * 支持 TypeScript
 
+## Install
+```
+npm i ctrip-apollo-client
+```
 ## Usage
 
 * [typescript demo](./example/ts-demo/index.ts)
