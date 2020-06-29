@@ -93,9 +93,6 @@ run();
     * **configPath** `string` 本地配置文件路径 默认值`./config/apolloConfig.json`
     * **logger** `object` 日志类 必须实现 `logger.info()`,`logger.error()` 两个方法
 
-    
-    
-
 **init(timeoutMs)** 
 初始化配置中心，拉取远端配置到端上，并且缓存一份到文件中，同时开启`HTTP Long Polling`来实时监控配置，如果拉取超过 timeoutMs ，或者发生异常，则读取本地缓存的配置文件。如果本地没有缓存配置文件，抛出异常。
 * return: Promise<void>   
