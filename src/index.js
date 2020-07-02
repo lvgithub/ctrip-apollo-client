@@ -159,11 +159,16 @@ class Client {
         try {
             const res = await axios.get(url)
             const data = res.data
-            for (const item of data) {
-                await this.fetchConfigFromDbByNamespace(item.namespaceName)
-                this.notifications[item.namespaceName] = item.notificationId
+            if (data) {
+                for (const item of data) {
+                    await this.fetchConfigFromDbByNamespace(item.namespaceName)
+                    this.notifications[item.namespaceName] = item.notificationId
+                }
             }
         } catch (error) {
+            if (+get(error, 'response.status') === 304) {
+                return
+            }
             this.error('pollingNotification error: ', error.message)
         }
     }
