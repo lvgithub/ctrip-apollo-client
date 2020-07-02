@@ -1,6 +1,6 @@
 {
   "name": "ctrip-apollo-client",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "本项目为携程配置中心框架 Apollo 提供的Node.js版本客户端。",
   "main": "src/index.js",
   "types": "./typings/ctripApolloClient.d.ts",
@@ -8,7 +8,15 @@
     "debug": "DEBUG=apollo-client node src/test/index.js",
     "test": "jest  --forceExit"
   },
-  "keywords": [],
+  "keywords": [
+    "apollo",
+    "配置中心",
+    "ctrip-apollo-client",
+    "apollo-client",
+    "Node.js",
+    "Node",
+    "node.js"
+  ],
   "author": "liuwei",
   "license": "MIT",
   "dependencies": {
