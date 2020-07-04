@@ -27,7 +27,7 @@
 
 ## Install
 ```
-npm i ctrip-apollo-client
+npm i @lvgithub/ctrip-apollo-client --save
 ```
 ## Usage
 
