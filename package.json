@@ -1,5 +1,5 @@
 {
-  "name": "ctrip-apollo-client",
+  "name": "@lvgithub/ctrip-apollo-client",
   "version": "1.0.3",
   "description": "本项目为携程配置中心框架 Apollo 提供的Node.js版本客户端。",
   "main": "src/index.js",
@@ -44,8 +44,5 @@
   },
   "jest": {
     "testEnvironment": "node"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
   }
 }
