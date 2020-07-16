@@ -6,6 +6,7 @@ const get = require('get-value')
 const fs = require('fs')
 const path = require('path')
 const internalIp = require('internal-ip')
+const crypto = require('crypto')
 
 const logPreStr = 'apollo-client: '
 
@@ -18,6 +19,7 @@ class Client {
             appId,
             clusterName,
             namespaceList,
+            accessKey,
             configPath,
             initTimeoutMs,
             onChange,
