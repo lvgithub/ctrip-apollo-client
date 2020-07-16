@@ -43,6 +43,7 @@ import Koa from 'koa';
 const apollo = new CtripApplloClient({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
+    accessKey: '<your Apollo AccessKey>',
     configPath: './config/apolloConfig.json',
     namespaceList: ['application', 'development.qa']
 });
