@@ -89,6 +89,7 @@ run();
 * options
     * **configServerUrl** `string` `required` Apollo配置服务的地址
     * **appId** `string` `required` 应用的appId
+    * **accessKey** `string` Apollo AccessKey
     * **clusterName** `string` 集群名,默认值:`default`
     * **namespaceList** `array` Namespace的名字,默认值:`[application]`
     * **configPath** `string` 本地配置文件路径 默认值`./config/apolloConfig.json`
