@@ -6,6 +6,7 @@ const get = require('get-value')
 const fs = require('fs')
 const path = require('path')
 const internalIp = require('internal-ip')
+const crypto = require('crypto')
 
 const logPreStr = 'apollo-client: '
 
@@ -18,6 +19,7 @@ class Client {
             appId,
             clusterName,
             namespaceList,
+            accessKey,
             configPath,
             initTimeoutMs,
             onChange,
@@ -33,6 +35,7 @@ class Client {
         this.appId = appId
         this.clusterName = clusterName || 'cluster'
         this.namespaceList = namespaceList || ['application']
+        this.accessKey = accessKey || ''
         this.configPath = configPath || './config/apolloConfig.json'
         this.notifications = {}
         this.info = (...args) => {
@@ -96,7 +99,7 @@ class Client {
         })
         for (const item of urlList) {
             try {
-                const res = await axios.get(item.url)
+                const res = await axios.get(item.url, {headers: this.genAuthHeaders(item.url, this.accessKey)})
                 config[item.namespace] = res.data
             } catch (error) {
                 this.error('fetchConfigFromCache error:', error)
@@ -111,7 +114,7 @@ class Client {
             config && config[namespace] && config[namespace].releaseKey
         const url = `${this.configServerUrl}/configs/${this.appId}/${this.clusterName}/${namespace}?releaseKey=${releaseKey}&ip=${this.clientIp}`
         try {
-            const res = await axios.get(url)
+            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) });
             config[namespace] = res.data
         } catch (error) {
             this.error('fetchConfigFromDbByNamespace error:', error.message)
@@ -130,7 +133,7 @@ class Client {
         })
         for (const item of urlList) {
             try {
-                const res = await axios.get(item.url)
+                const res = await axios.get(item.url, { headers: this.genAuthHeaders(item.url, this.accessKey) });
                 config[item.namespace] = res.data
             } catch (error) {
                 debug('fetchConfigFromDb error:', error.message)
@@ -157,7 +160,7 @@ class Client {
         const url = `${this.configServerUrl}/notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}`
 
         try {
-            const res = await axios.get(url)
+            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) });
             const data = res.data
             if (data) {
                 for (const item of data) {
@@ -299,6 +302,51 @@ class Client {
 
     static withValue (target, key, field, namespace = 'application') {
         return global._apollo.withValue(target, key, field, namespace)
+    }
+
+    /**
+     * 生成访问签名头信息
+     *
+     * @param reqUrl 传入请求URL
+     * @param secret 传入Apollo accessKey
+     * @returns {{Authorization: 'xxx...', Timestamp: 1234}} || {{}}
+     */
+    genAuthHeaders(reqUrl, secret) {
+        const Timestamp = Date.now();
+        const Authorization = this.genSignature(reqUrl, Timestamp, secret);
+        return secret ? {
+            Authorization,
+            Timestamp,
+        } : {};
+    }
+
+    /**
+     * 生成签名
+     *
+     * @param url 传入请求URL
+     * @param timestamp 传入当前时间戳
+     * @param secret 传入Apollo accessKey
+     * @returns {string} 返回base64的签名字符串
+     */
+    genSignature(url, timestamp, secret) {
+        const hmac = crypto.createHmac('sha1', secret);
+        const signature = hmac.update(`${timestamp}\n${this.url2PathWithQuery(url)}`).digest().toString('base64');
+        return `Apollo ${this.appId}:${signature}`;
+    }
+
+    /**
+     * 生成请求路径 + 请求参数的url
+     *
+     * @param urlString 传入请求URL
+     * @returns {string} /notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}
+     */
+    url2PathWithQuery(urlString) {
+        const url = new URL(urlString);
+        const path = url.pathname;
+        const query = url.search;
+        let pathWithQuery = path;
+        if (query && query.length > 0) pathWithQuery += query;
+        return pathWithQuery;
     }
 }
 
