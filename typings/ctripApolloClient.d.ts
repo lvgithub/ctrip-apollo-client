@@ -4,6 +4,7 @@ interface StringArray {
 interface Option {
     configServerUrl: string
     appId: string
+    accessKey?: string
     configPath?: string
     namespaceList?: StringArray
     logger?: object
