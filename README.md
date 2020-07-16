@@ -1,6 +1,6 @@
 
 
-项目会随着业务使用的场景不断维护迭代，如果有兴趣，可以 watch 持续关注哦 
+项目会随着业务使用的场景不断维护迭代，如果有兴趣，可以 [watch](https://github.com/lvgithub/stick#readme) 持续关注哦, 点击 [star](https://github.com/lvgithub/stick#readme) 是对我们最大的支持与鼓励。
 
 ## Introduction
 
@@ -21,13 +21,13 @@
 
 ## Features
 * 配置热更新
-* 缓存配置到本地s
+* 缓存配置到本地
 * 灰度发布
 * 支持 TypeScript
 
 ## Install
 ```
-npm i ctrip-apollo-client
+npm i @lvgithub/ctrip-apollo-client --save
 ```
 ## Usage
 
