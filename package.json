@@ -6,7 +6,9 @@
   "types": "./typings/ctripApolloClient.d.ts",
   "scripts": {
     "debug": "DEBUG=apollo-client node src/test/index.js",
-    "test": "jest  --forceExit"
+    "test": "jest  --forceExit",
+    "push:npm": "npm publish  --registry=https://registry.npmjs.org",
+    "push:githubnpm": "npm publish  --registry=https://npm.pkg.github.com/lvgithub"
   },
   "keywords": [
     "apollo",
