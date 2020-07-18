@@ -1,10 +1,8 @@
 
 
-项目会随着业务使用的场景不断维护迭代，如果有兴趣，可以 [watch](https://github.com/lvgithub/stick#readme) 持续关注哦, 点击 [star](https://github.com/lvgithub/stick#readme) 是对我们最大的支持与鼓励。
+随着业务使用的持续迭代，可以 [watch](https://github.com/lvgithub/stick#readme) 持续关注哦, 点击 [star](https://github.com/lvgithub/stick#readme) 是对我们最大的支持与鼓励。
 
 ## Introduction
-
-1. 本项目为携程配置中心框架 Apollo 提供的Node.js版本客户端；
 
 2. 客户端连接成功后，会拉取所有配置到本地存储一份，主要是用于 apollo 服务不可用的情况下容错和降级；
 
@@ -83,7 +81,7 @@ run();
 
 ## API
 
-**ApolloClient(options)** 构造函数
+**new ApolloClient(options)** 构造函数
 * returns: `apolloClient`
 
 * options
