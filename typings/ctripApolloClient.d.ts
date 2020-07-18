@@ -9,10 +9,9 @@ interface Option {
     namespaceList?: StringArray
     logger?: object
 }
-class value {
+export class value {
     public value: string
 }
-
 export declare class CtripApplloClient {
     constructor(option: Option)
     static value(field: string, namespace?: string)
@@ -24,7 +23,6 @@ export declare class CtripApplloClient {
     getValue(field: string, namespace?: string): string
     onChange(callback: (obj: any) => void): void
 }
-
 
 export function value(field: string, namespace?: string)
 export function withValue(target: any, key: string, field: string, namespace?: string)
