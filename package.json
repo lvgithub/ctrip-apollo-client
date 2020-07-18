@@ -1,6 +1,6 @@
 {
   "name": "@lvgithub/ctrip-apollo-client",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "本项目为携程配置中心框架 Apollo 提供的Node.js版本客户端。",
   "main": "src/index.js",
   "types": "./typings/ctripApolloClient.d.ts",
@@ -9,7 +9,7 @@
     "test": "jest  --forceExit",
     "push:npm": "npm publish  --registry=https://registry.npmjs.org",
     "push:githubnpm": "npm publish  --registry=https://npm.pkg.github.com/lvgithub",
-    "publish":"npm run push:npm && push:githubnpm"
+    "publish": "npm run push:npm && push:githubnpm"
   },
   "keywords": [
     "apollo",
