@@ -4,12 +4,9 @@
 
 ## Introduction
 
-2. 客户端连接成功后，会拉取所有配置到本地存储一份，主要是用于 apollo 服务不可用的情况下容错和降级；
+<img src="assets/README/image-20200718092155841.png" alt="image-20200718092155841" style="zoom:60%;" />
 
-3. 通过`Http long polling` 机制实现热更新，客户端会自动修改被注入的属性值，实现无重启修改配置；
-4. 可以通过`getConfigs()` 函数获取最新的配置；
-5. 故障容错机制，apollo 服务不可用的情况下，客户端会自动恢复最近一份配置启动；
-6. 配置中心配置 `mysql.host:127.0.0.1`  客户端会自动转化为Json `{ mysql:{ host: 127.0.0.1 } } }` 方便JS处理。
+中心配置 `mysql.host:127.0.0.1`  客户端会自动转化为Json `{ mysql:{ host: 127.0.0.1 } } }` 方便处理。
 
 ## apollo 服务端测试环境:
 
