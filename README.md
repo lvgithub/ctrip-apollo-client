@@ -4,7 +4,7 @@
 
 ## Introduction
 
-<img src="assets/README/image-20200718092155841.png" alt="image-20200718092155841" style="zoom:60%;" />
+<img src="assets/README/image-20200718092438648.png" alt="image-20200718092438648" style="zoom:50%;" />
 
 中心配置 `mysql.host:127.0.0.1`  客户端会自动转化为Json `{ mysql:{ host: 127.0.0.1 } } }` 方便处理。
 
