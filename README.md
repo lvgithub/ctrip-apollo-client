@@ -4,7 +4,9 @@
 
 ## Introduction
 
-<img src="assets/README/image-20200718092438648.png" alt="image-20200718092438648" style="zoom:50%;" />
+![image-20200718092438648](assets/README/image-20200718092438648.png)
+
+如果图片无法打开，请到 github  [ctrip-apollo-client](https://github.com/lvgithub/ctrip-apollo-client) 中查看
 
 中心配置 `mysql.host:127.0.0.1`  客户端会自动转化为Json `{ mysql:{ host: 127.0.0.1 } } }` 方便处理。
 
