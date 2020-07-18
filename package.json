@@ -9,7 +9,7 @@
     "test": "jest  --forceExit",
     "push:npm": "npm publish  --registry=https://registry.npmjs.org",
     "push:githubnpm": "npm publish  --registry=https://npm.pkg.github.com/lvgithub",
-    "publish": "npm run push:npm && push:githubnpm"
+    "publish": "npm run push:npm && npm run push:githubnpm"
   },
   "keywords": [
     "apollo",
