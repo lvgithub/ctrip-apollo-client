@@ -4,11 +4,15 @@
 
 ## Introduction
 
+[Apollo（阿波罗）](https://github.com/ctripcorp/apollo)是携程框架部门研发的分布式配置中心，能够集中化管理应用不同环境、不同集群的配置，配置修改后能够实时推送到应用端，并且具备规范的权限、流程治理等特性，适用于微服务配置管理场景。
+
+**本项目为Node.js 客户端,工作原理如下：**
+
 <img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghbnklwk6dj30va0k8teo.jpg" alt="image-20200718092438648" style="zoom:50%;" />
 
 
 
-中心配置 `mysql.host:127.0.0.1`  客户端会自动转化为Json `{ mysql:{ host: 127.0.0.1 } } }` 方便处理。
+配置中心配置以点分隔如 `mysql.host:127.0.0.1`  ,客户端会自动转化为Json `{ mysql:{ host: 127.0.0.1 } } }` 方便处理。
 
 ## apollo 服务端测试环境:
 
