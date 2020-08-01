@@ -1,6 +1,6 @@
 
 
-随着业务使用的持续迭代， [watch](https://github.com/lvgithub/stick#readme) 持续关注~
+随着业务使用会持续迭代，欢迎 [watch](https://github.com/lvgithub/stick#readme) 持续关注~
 
 ## Introduction
 
