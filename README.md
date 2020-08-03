@@ -8,7 +8,7 @@
 
 **本项目为Node.js 客户端,工作原理如下：**
 
-<img src="http://ipic.lightnp.com/image-20200718092438648.png" alt="image-20200718092438648" style="zoom:50%;" />
+<img src="http://ipic.lightnp.com/image-20200718092438648.png" alt="image-20200718092438648" />
 
 
 
