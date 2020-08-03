@@ -9,9 +9,6 @@
 **本项目为Node.js 客户端,工作原理如下：**
 
 ![图裂了，看 assets/README/img.png](assets/README/img.png)
-
-
-
 配置中心配置以点分隔如 `mysql.host:127.0.0.1`  ,客户端会自动转化为Json 
 ```
 { mysql:{ host: 127.0.0.1 } } }
