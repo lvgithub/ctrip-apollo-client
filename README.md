@@ -8,7 +8,7 @@
 
 **本项目为Node.js 客户端,工作原理如下：**
 
-<img src="http://ipic.lightnp.com/image-20200718092438648.png" alt="image-20200718092438648" />
+![img](http://ipic.lightnp.com/image-20200718092438648.png)
 
 配置中心配置以点分隔如 `mysql.host:127.0.0.1`  ,客户端会自动转化为Json 
 ```
