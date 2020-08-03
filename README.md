@@ -38,11 +38,11 @@
 
 ## Examples
 
-[js-demo](https://github.com/lvgithub/ctrip-apollo-client/blob/master/example/js-demo)
+* [js-demo](https://github.com/lvgithub/ctrip-apollo-client/blob/master/example/js-demo)
 
-[ts-demo](https://github.com/lvgithub/ctrip-apollo-client/tree/master/example/ts-demo)
+* [ts-demo](https://github.com/lvgithub/ctrip-apollo-client/tree/master/example/ts-demo)
 
-[koa-demo](https://github.com/lvgithub/ctrip-apollo-client/blob/master/example/koa-demo)
+* [koa-demo](https://github.com/lvgithub/ctrip-apollo-client/blob/master/example/koa-demo)
 
 ## Benchmark
 **一次性注入** [localValue] x **736,896,802** ops/sec ±1.49% (82 runs sampled)
