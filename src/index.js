@@ -173,6 +173,7 @@ class Client {
                 return
             }
             this.error('pollingNotification error: ', error.message)
+            throw error
         }
     }
 
