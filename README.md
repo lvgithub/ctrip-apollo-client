@@ -40,13 +40,12 @@ Examples 使用下面的环境作为测试服务，可直接运行。
 * [koa-demo](https://github.com/lvgithub/ctrip-apollo-client/blob/master/example/koa-demo)
 
 ## Benchmark
-| 注入方式     | 性能                    | 用例数          |
-| ------------ | ----------------------- | --------------- |
-| 一次性注入   | **736,896,802** ops/sec | 82 runs sampled |
-| 支持热更新   | **2,021,310** ops/sec   | 87 runs sampled |
-| 热更新默认值 | **1,581,645** ops/sec   | 87 runs sampled |
-| 装饰器注入   | **2,161,312** ops/sec   | 87 runs sampled |
-| 原生访问     | **704,644,395** ops/sec | 82 runs sampled |
+| 注入方式            | 性能                    | 用例数          |
+| ------------------- | ----------------------- | --------------- |
+| 不热更新            | **736,896,802** ops/sec | 82 runs sampled |
+| 热更新 `hotValue()` | **2,021,310** ops/sec   | 87 runs sampled |
+| 热更新 `@value`     | **2,161,312** ops/sec   | 87 runs sampled |
+| 原生访问            | **704,644,395** ops/sec | 82 runs sampled |
 
 ## [License](https://github.com/lvgithub/ctrip-apollo-client/blob/master/LICENSE)
 

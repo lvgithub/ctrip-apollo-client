@@ -22,7 +22,7 @@
 const config = apollo.getConfigs();
 ```
 
-**getValue (namespace = 'application')**  获取具体的配置字段
+**getValue (field, namespace = 'application')**  获取具体的配置字段
 * returns: `string`
 * namespace 默认值: `application`
 * field `string` eg: `mysql.port:3306` 分号前面key,如果未配置 3306 作为默认值
@@ -33,7 +33,7 @@ class User {
     }
 }
 ```
-**hotValue (namespace = 'application')**  获取具体的配置字段，封装 `getter`(热更新)
+**hotValue (field, namespace = 'application')**  获取具体的配置字段，封装 `getter`(热更新)
 * returns: `{value}` 
 * namespace 默认值: `application`
 * field `string` 属性位置 eg: `mysql.port:3306` 分号前面key,如果未配置 3306 作为默认值
