@@ -50,7 +50,7 @@ const config = apollo.getConfigs();
 ```
 class User {
     get userName () {
-        return apollo.getValue({ field: 'user.name:liuwei' });
+        return apollo.getValue('user.name:liuwei');
     }
 }
 ```
@@ -59,7 +59,7 @@ class User {
 * namespace 默认值: `application`
 * field `string` 属性位置 eg: `mysql.port:3306` 分号前面key,如果未配置 3306 作为默认值
 ```
-const userName = apollo.hotValue({ field: 'user.name:liuwei' });
+const userName = apollo.hotValue('user.name:liuwei');
 console.log(userName.value);
 ```
 
