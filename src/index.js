@@ -99,7 +99,7 @@ class Client {
         })
         for (const item of urlList) {
             try {
-                const res = await axios.get(item.url, {headers: this.genAuthHeaders(item.url, this.accessKey)})
+                const res = await axios.get(item.url, { headers: this.genAuthHeaders(item.url, this.accessKey) })
                 config[item.namespace] = res.data
             } catch (error) {
                 this.error('fetchConfigFromCache error:', error)
@@ -114,13 +114,13 @@ class Client {
             config && config[namespace] && config[namespace].releaseKey
         const url = `${this.configServerUrl}/configs/${this.appId}/${this.clusterName}/${namespace}?releaseKey=${releaseKey}&ip=${this.clientIp}`
         try {
-            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) });
+            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) })
             config[namespace] = res.data
         } catch (error) {
             if (+get(error, 'response.status') === 304) {
                 return
             }
-            this.error('fetchConfigFromDbByNamespace error:', error.message)
+            this.error('fetchConfigFromDbByNamespace error:', error.message, url)
         }
         // this.apolloConfig = config;
         this.saveConfigsToFile(config)
@@ -136,13 +136,13 @@ class Client {
         })
         for (const item of urlList) {
             try {
-                const res = await axios.get(item.url, { headers: this.genAuthHeaders(item.url, this.accessKey) });
+                const res = await axios.get(item.url, { headers: this.genAuthHeaders(item.url, this.accessKey) })
                 config[item.namespace] = res.data
             } catch (error) {
                 debug('fetchConfigFromDb error:', error.message)
                 throw new Error(
                     `fetchConfigFromDb error: ${error.message} url:${item.url}`
-                  )
+                )
             }
         }
         // this.apolloConfig = config;
@@ -165,7 +165,7 @@ class Client {
         const url = `${this.configServerUrl}/notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}`
 
         try {
-            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) });
+            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) })
             const data = res.data
             if (data) {
                 for (const item of data) {
@@ -177,7 +177,7 @@ class Client {
             if (+get(error, 'response.status') === 304) {
                 return
             }
-            this.error('pollingNotification error: ', error.message)
+            this.error('pollingNotification error: ', error.message, url)
             throw error
         }
     }
@@ -217,7 +217,7 @@ class Client {
     // 读取本地配置文件
     readConfigsFromFile () {
         const configPath = this.configPath
-        if (!fs.existsSync(configPath)) { 
+        if (!fs.existsSync(configPath)) {
             return {}
         }
         const fileBuf = fs.readFileSync(configPath)
@@ -321,13 +321,13 @@ class Client {
      * @param secret 传入Apollo accessKey
      * @returns {{Authorization: 'xxx...', Timestamp: 1234}} || {{}}
      */
-    genAuthHeaders(reqUrl, secret) {
-        const Timestamp = Date.now();
-        const Authorization = this.genSignature(reqUrl, Timestamp, secret);
+    genAuthHeaders (reqUrl, secret) {
+        const Timestamp = Date.now()
+        const Authorization = this.genSignature(reqUrl, Timestamp, secret)
         return secret ? {
             Authorization,
-            Timestamp,
-        } : {};
+            Timestamp
+        } : {}
     }
 
     /**
@@ -338,10 +338,10 @@ class Client {
      * @param secret 传入Apollo accessKey
      * @returns {string} 返回base64的签名字符串
      */
-    genSignature(url, timestamp, secret) {
-        const hmac = crypto.createHmac('sha1', secret);
-        const signature = hmac.update(`${timestamp}\n${this.url2PathWithQuery(url)}`).digest().toString('base64');
-        return `Apollo ${this.appId}:${signature}`;
+    genSignature (url, timestamp, secret) {
+        const hmac = crypto.createHmac('sha1', secret)
+        const signature = hmac.update(`${timestamp}\n${this.url2PathWithQuery(url)}`).digest().toString('base64')
+        return `Apollo ${this.appId}:${signature}`
     }
 
     /**
@@ -350,13 +350,13 @@ class Client {
      * @param urlString 传入请求URL
      * @returns {string} /notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}
      */
-    url2PathWithQuery(urlString) {
-        const url = new URL(urlString);
-        const path = url.pathname;
-        const query = url.search;
-        let pathWithQuery = path;
-        if (query && query.length > 0) pathWithQuery += query;
-        return pathWithQuery;
+    url2PathWithQuery (urlString) {
+        const url = new URL(urlString)
+        const path = url.pathname
+        const query = url.search
+        let pathWithQuery = path
+        if (query && query.length > 0) pathWithQuery += query
+        return pathWithQuery
     }
 }
 
