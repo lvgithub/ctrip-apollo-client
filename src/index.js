@@ -117,6 +117,9 @@ class Client {
             const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) });
             config[namespace] = res.data
         } catch (error) {
+            if (+get(error, 'response.status') === 304) {
+                return
+            }
             this.error('fetchConfigFromDbByNamespace error:', error.message)
         }
         // this.apolloConfig = config;
