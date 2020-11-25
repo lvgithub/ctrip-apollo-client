@@ -67,11 +67,11 @@ class Client {
         //     this.polling()
         // }
 
-        // timeOut 是为了等待取得clientIp
+        // 为了等待取得clientIp
         // 因为第一次notifications.id 默认值为-1 所以本函数也是初始化配置的地方
-        setTimeout(() => {
+        setImmediate(() => {
             this.polling()
-        }, 2000)
+        }, 1)
 
         global._apollo = this
     }
