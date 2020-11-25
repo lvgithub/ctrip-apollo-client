@@ -137,7 +137,9 @@ class Client {
                 config[item.namespace] = res.data
             } catch (error) {
                 debug('fetchConfigFromDb error:', error.message)
-                throw new Error('fetchConfigFromDb error')
+                throw new Error(
+                    `fetchConfigFromDb error: ${error.message} url:${item.url}`
+                  )
             }
         }
         // this.apolloConfig = config;
@@ -212,6 +214,9 @@ class Client {
     // 读取本地配置文件
     readConfigsFromFile () {
         const configPath = this.configPath
+        if (!fs.existsSync(configPath)) { 
+            return {}
+        }
         const fileBuf = fs.readFileSync(configPath)
 
         if (fileBuf <= 0) {
@@ -233,6 +238,7 @@ class Client {
             ])
         } catch (error) {
             // 初始化失败，恢复本地配置文件
+            this.error('error', error)
             this.apolloConfig = this.readConfigsFromFile()
         }
     }
