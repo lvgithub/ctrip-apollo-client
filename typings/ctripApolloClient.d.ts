@@ -7,7 +7,8 @@ interface Option {
     accessKey?: string
     configPath?: string
     namespaceList?: StringArray
-    logger?: object
+    logger?: object,
+    clusterName?: string
 }
 export class value {
     public value: string
