@@ -13,7 +13,7 @@ const logPreStr = 'apollo-client: '
 const sleep = ms => new Promise(resolve => setTimeout(() => resolve(), ms))
 const reject = ms => new Promise((resolve, reject) => setTimeout(() => reject(new Error('request time out')), ms))
 class Client {
-    constructor (option) {
+    constructor(option) {
         const {
             configServerUrl,
             appId,
@@ -23,7 +23,8 @@ class Client {
             configPath,
             initTimeoutMs,
             onChange,
-            logger
+            logger,
+            proxyUrl
         } = option
         // 初始化超时
         this.initTimeoutMs = initTimeoutMs || 10000
@@ -37,6 +38,7 @@ class Client {
         this.namespaceList = namespaceList || ['application']
         this.accessKey = accessKey || ''
         this.configPath = configPath || './config/apolloConfig.json'
+        this.proxyUrl = proxyUrl || configServerUrl;
         this.notifications = {}
         this.info = (...args) => {
             debug(logPreStr, ...args)
@@ -76,7 +78,7 @@ class Client {
         global._apollo = this
     }
 
-    async polling () {
+    async polling() {
         let pollingCount = 1
         while (true) {
             this.info('polling count:', pollingCount++)
@@ -90,16 +92,24 @@ class Client {
     }
 
     // 从缓存中拉取配置文件
-    async fetchConfigFromCache () {
+    async fetchConfigFromCache() {
         const urlList = []
         const config = {}
         this.namespaceList.map(namespace => {
-            const url = `${this.configServerUrl}/configfiles/json/${this.appId}/${this.clusterName}/${namespace}?ip=${this.clientIp}`
-            urlList.push({ namespace, url })
+            const queryUrl = `/configfiles/json/${this.appId}/${this.clusterName}/${namespace}?ip=${this.clientIp}`
+            const url = `${this.configServerUrl}${queryUrl}`;
+            const proxyUrl = `${this.proxyUrl}${queryUrl}`;
+            urlList.push({
+                namespace,
+                url,
+                proxyUrl
+            })
         })
         for (const item of urlList) {
             try {
-                const res = await axios.get(item.url, { headers: this.genAuthHeaders(item.url, this.accessKey) })
+                const res = await axios.get(item.url, {
+                    headers: this.genAuthHeaders(item.proxyUrl, this.accessKey)
+                })
                 config[item.namespace] = res.data
             } catch (error) {
                 this.error('fetchConfigFromCache error:', error)
@@ -108,13 +118,17 @@ class Client {
     }
 
     // 根据namespace拉取配置文件
-    async fetchConfigFromDbByNamespace (namespace) {
+    async fetchConfigFromDbByNamespace(namespace) {
         const config = this.getConfigs()
         const releaseKey =
             config && config[namespace] && config[namespace].releaseKey
-        const url = `${this.configServerUrl}/configs/${this.appId}/${this.clusterName}/${namespace}?releaseKey=${releaseKey}&ip=${this.clientIp}`
+        const queryUrl = `/configs/${this.appId}/${this.clusterName}/${namespace}?releaseKey=${releaseKey}&ip=${this.clientIp}`
+        const url = `${this.configServerUrl}${queryUrl}`;
+        const proxyUrl = `${this.proxyUrl}${queryUrl}`;
         try {
-            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) })
+            const res = await axios.get(url, {
+                headers: this.genAuthHeaders(proxyUrl, this.accessKey)
+            })
             config[namespace] = res.data
         } catch (error) {
             if (+get(error, 'response.status') === 304) {
@@ -127,16 +141,25 @@ class Client {
     }
 
     // 拉取全量配置
-    async fetchConfigFromDb () {
+    async fetchConfigFromDb() {
         const urlList = []
         const config = {}
         this.namespaceList.map(namespace => {
-            const url = `${this.configServerUrl}/configs/${this.appId}/${this.clusterName}/${namespace}?ip=${this.clientIp}`
-            urlList.push({ namespace, url })
+
+            const queryUrl = `/configs/${this.appId}/${this.clusterName}/${namespace}?ip=${this.clientIp}`
+            const url = `${this.configServerUrl}${queryUrl}`;
+            const proxyUrl = `${this.proxyUrl}${queryUrl}`;
+            urlList.push({
+                namespace,
+                url,
+                proxyUrl
+            })
         })
         for (const item of urlList) {
             try {
-                const res = await axios.get(item.url, { headers: this.genAuthHeaders(item.url, this.accessKey) })
+                const res = await axios.get(item.url, {
+                    headers: this.genAuthHeaders(item.proxyUrl, this.accessKey)
+                })
                 config[item.namespace] = res.data
             } catch (error) {
                 debug('fetchConfigFromDb error:', error.message)
@@ -150,7 +173,7 @@ class Client {
     }
 
     // 监控配置文件变更
-    async pollingNotification () {
+    async pollingNotification() {
         this.info('pollingNotification start')
         const notifications = JSON.stringify(
             Object.keys(this.notifications).map(namespace => {
@@ -162,10 +185,13 @@ class Client {
         )
 
         const notificationsEncode = encodeURIComponent(notifications)
-        const url = `${this.configServerUrl}/notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}`
-
+        const queryUrl = `${this.configServerUrl}/notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}`
+        const url = `${this.configServerUrl}${queryUrl}`;
+        const proxyUrl = `${this.proxyUrl}${queryUrl}`;
         try {
-            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) })
+            const res = await axios.get(url, {
+                headers: this.genAuthHeaders(proxyUrl, this.accessKey)
+            })
             const data = res.data
             if (data) {
                 for (const item of data) {
@@ -183,13 +209,15 @@ class Client {
     }
 
     // 写入配置文件到磁盘
-    saveConfigsToFile (configObj) {
+    saveConfigsToFile(configObj) {
         // const configObj = this.apolloConfig;
         const configPath = this.configPath
         const dirStr = path.dirname(configPath)
 
         if (!fs.existsSync(dirStr)) {
-            fs.mkdirSync(dirStr, { recursive: true })
+            fs.mkdirSync(dirStr, {
+                recursive: true
+            })
         }
 
         // 把点属性的key嵌套为对象
@@ -215,7 +243,7 @@ class Client {
     }
 
     // 读取本地配置文件
-    readConfigsFromFile () {
+    readConfigsFromFile() {
         const configPath = this.configPath
         if (!fs.existsSync(configPath)) {
             return {}
@@ -231,7 +259,7 @@ class Client {
     }
 
     // 拉取所有配置到本地
-    async init (initTimeoutMs) {
+    async init(initTimeoutMs) {
         try {
             const ip = await internalIp.v4()
             this.clientIp = ip
@@ -246,16 +274,16 @@ class Client {
         }
     }
 
-    getConfigs () {
+    getConfigs() {
         this.info('getConfigs: ', JSON.stringify(this.apolloConfig))
         return this.apolloConfig
     }
 
-    onChange (cb) {
+    onChange(cb) {
         this.onPolling = cb
     }
 
-    getValue (field, namespace = 'application') {
+    getValue(field, namespace = 'application') {
         const [key, defaultValue] = field.split(':')
         if (!this.apolloConfig[namespace]) {
             return defaultValue
@@ -270,15 +298,15 @@ class Client {
     }
 
     // 通过 getter 实现获取最新配置
-    hotValue (field, namespace = 'application') {
-        return new (class Value {
-            get value () {
+    hotValue(field, namespace = 'application') {
+        return new(class Value {
+            get value() {
                 return global._apollo.getValue(field, namespace)
             }
         })()
     }
 
-    withValue (target, key, field, namespace = 'application') {
+    withValue(target, key, field, namespace = 'application') {
         if (delete target[key]) {
             Object.defineProperty(target, key, {
                 get: () => {
@@ -293,7 +321,7 @@ class Client {
         }
     }
 
-    static value (field, namespace) {
+    static value(field, namespace) {
         return function (target, key) {
             delete target[key]
             Object.defineProperty(target, key, {
@@ -306,11 +334,11 @@ class Client {
         }
     }
 
-    static hotValue (field, namespace = 'application') {
+    static hotValue(field, namespace = 'application') {
         return global._apollo.hotValue(field, namespace)
     }
 
-    static withValue (target, key, field, namespace = 'application') {
+    static withValue(target, key, field, namespace = 'application') {
         return global._apollo.withValue(target, key, field, namespace)
     }
 
@@ -321,7 +349,7 @@ class Client {
      * @param secret 传入Apollo accessKey
      * @returns {{Authorization: 'xxx...', Timestamp: 1234}} || {{}}
      */
-    genAuthHeaders (reqUrl, secret) {
+    genAuthHeaders(reqUrl, secret) {
         const Timestamp = Date.now()
         const Authorization = this.genSignature(reqUrl, Timestamp, secret)
         return secret ? {
@@ -338,7 +366,7 @@ class Client {
      * @param secret 传入Apollo accessKey
      * @returns {string} 返回base64的签名字符串
      */
-    genSignature (url, timestamp, secret) {
+    genSignature(url, timestamp, secret) {
         const hmac = crypto.createHmac('sha1', secret)
         const signature = hmac.update(`${timestamp}\n${this.url2PathWithQuery(url)}`).digest().toString('base64')
         return `Apollo ${this.appId}:${signature}`
@@ -350,7 +378,7 @@ class Client {
      * @param urlString 传入请求URL
      * @returns {string} /notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}
      */
-    url2PathWithQuery (urlString) {
+    url2PathWithQuery(urlString) {
         const url = new URL(urlString)
         const path = url.pathname
         const query = url.search
