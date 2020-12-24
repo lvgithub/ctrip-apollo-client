@@ -9,7 +9,6 @@ interface Option {
     namespaceList?: StringArray
     clusterName?: string
     logger?: object
-    clusterName?: string    
 }
 export class value {
     public value: string
