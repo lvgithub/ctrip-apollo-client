@@ -15,6 +15,7 @@ const reject = ms => new Promise((resolve, reject) => setTimeout(() => reject(ne
 class Client {
     constructor (option) {
         const {
+            metaServerUrl,
             configServerUrl,
             appId,
             clusterName,
@@ -32,6 +33,7 @@ class Client {
         // this.pollingIntervalMs = pollingIntervalMs || 1000 * 60;
         this.apolloConfig = {}
         this.configServerUrl = configServerUrl
+        this.metaServerUrl = metaServerUrl
         this.appId = appId
         this.clusterName = clusterName || 'cluster'
         this.namespaceList = namespaceList || ['application']
@@ -76,10 +78,27 @@ class Client {
         global._apollo = this
     }
 
+    async refreshServerUrl () {
+        if (!this.metaServerUrl) {
+            return
+        }
+        try {
+            const { data } = await axios.get(`${this.metaServerUrl}/services/config`)
+            const len = data.length - 1
+            const seed = Math.floor(Math.random() * len)
+            const url = data[seed].homepageUrl
+            this.configServerUrl = url.substr(0, url.length - 1)
+        } catch (error) {
+            this.error('refreshServerUrl error: ', error)
+        }
+    }
+
     async polling () {
         let pollingCount = 1
+
         while (true) {
             this.info('polling count:', pollingCount++)
+            await this.refreshServerUrl()
             try {
                 await this.pollingNotification()
             } catch (error) {
@@ -233,6 +252,7 @@ class Client {
     // 拉取所有配置到本地
     async init (initTimeoutMs) {
         try {
+            await this.refreshServerUrl()
             const ip = await internalIp.v4()
             this.clientIp = ip
             await Promise.race([
