@@ -2,7 +2,8 @@
 * returns: `apolloClient`
 
 * options
-    * **configServerUrl** `string` `required` Apollo配置服务的地址
+    * **metaServerUrl** `string` meta server 地址,负载均衡获取 config server 地址
+    * **configServerUrl** `string` config server 地址，配置了metaServerUrl 本项可以不配置
     * **appId** `string` `required` 应用的appId
     * **accessKey** `string` Apollo AccessKey
     * **clusterName** `string` 集群名,默认值:`default`
