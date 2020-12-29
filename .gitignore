@@ -3,27 +3,17 @@ node_modules
 **/node_modules/
 output
 .DS_Store
-# compiled output
 /dist
-
 /node_modules
-
-# Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
-# OS
 .DS_Store
-
-# Tests
 /coverage
 /.nyc_output
-
-# IDEs and editors
 /.idea
 .project
 .classpath
