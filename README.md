@@ -26,9 +26,13 @@ Examples 使用下面的环境作为测试服务，可直接运行。
 * 灰度发布
 * 支持 TypeScript
 
+## Install
+
+`npm i @lvgithub/ctrip-apollo-client`
+
 ## Links
 
-* [Install](https://www.npmjs.com/package/@lvgithub/ctrip-apollo-client)
+* [Npm](https://www.npmjs.com/package/@lvgithub/ctrip-apollo-client)
 * [Getting Started](https://github.com/lvgithub/ctrip-apollo-client/blob/master/docs/GettingStarted.md)
 * [API  Reference](https://github.com/lvgithub/ctrip-apollo-client/blob/master/docs/API.MD)
 
