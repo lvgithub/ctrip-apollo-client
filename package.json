@@ -20,7 +20,7 @@
   "author": "liuwei",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": ">=0.21.1",
     "bluebird": "^3.7.2",
     "get-value": "^3.0.1",
     "internal-ip": "^6.0.0",
