@@ -2,7 +2,7 @@ interface StringArray {
     [index: number]: string;
 }
 interface Option {
-    metaerverUrl?: string
+    metaServerUrl?: string
     configServerUrl?: string
     appId: string
     accessKey?: string
