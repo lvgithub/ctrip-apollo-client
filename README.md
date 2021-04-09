@@ -32,7 +32,7 @@ Examples 使用下面的环境作为测试服务，可直接运行。
 
 ## Links
 
-* [Npm](https://www.npmjs.com/package/@lvgithub/ctrip-apollo-client)
+* [Install](https://www.npmjs.com/package/@lvgithub/ctrip-apollo-client)
 * [Getting Started](https://github.com/lvgithub/ctrip-apollo-client/blob/master/docs/GettingStarted.md)
 * [API  Reference](https://github.com/lvgithub/ctrip-apollo-client/blob/master/docs/API.MD)
 
