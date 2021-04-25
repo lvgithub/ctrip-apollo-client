@@ -14,7 +14,7 @@ interface Option {
 export class value {
     public value: string
 }
-export declare class CtripApplloClient {
+export declare class CtripApolloClient {
     constructor(option: Option)
     static value(field: string, namespace?: string)
     hotValue(field: string, namespace?: string)
