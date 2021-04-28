@@ -1,4 +1,4 @@
-🌈🌈🌈 如果使用中有什么问题，欢迎提PR一起维护
+🌈🌈🌈 这是用Node.js编写的Apollo（配置中心）客户端
 
 ## Introduction
 
