@@ -12,7 +12,7 @@
     * **logger** `object` 日志类 必须实现 `logger.info()`,`logger.error()` 两个方法
     
     ```javascript
-    const apollo = new CtripApplloClient({
+    const apollo = new CtripApolloClient({
         configServerUrl: 'http://106.54.227.205:8080',
         appId: 'apolloclient',
         configPath: './config/apolloConfig.json',

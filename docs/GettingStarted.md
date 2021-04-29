@@ -5,10 +5,10 @@
 * JS版本demo [源码](../example/js-demo/index.js)
 
 ```typescript
-import { CtripApplloClient, value, hotValue } from 'ctrip-apollo-client';
+import { CtripApolloClient, value, hotValue } from 'ctrip-apollo-client';
 import Koa from 'koa';
 
-const apollo = new CtripApplloClient({
+const apollo = new CtripApolloClient({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
     accessKey: '<your Apollo AccessKey>',

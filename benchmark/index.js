@@ -1,5 +1,5 @@
 const Benchmark = require('benchmark')
-const { CtripApplloClient, withValue } = require('../src/index')
+const { CtripApolloClient, withValue } = require('../src/index')
 const suite = new Benchmark.Suite()
 const configJSON = {
     application: {
@@ -22,7 +22,7 @@ const configJSON = {
 }
 
 // 初始化客户端
-const apollo = new CtripApplloClient({
+const apollo = new CtripApolloClient({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
     configPath: './config/apolloConfig.json',
