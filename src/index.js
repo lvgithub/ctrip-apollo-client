@@ -380,7 +380,7 @@ class Client {
     }
 }
 
-exports.CtripApplloClient = Client
+exports.CtripApolloClient = Client
 exports.value = Client.value
 exports.hotValue = Client.hotValue
 exports.withValue = Client.withValue

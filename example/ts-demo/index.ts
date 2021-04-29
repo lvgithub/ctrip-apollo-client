@@ -1,7 +1,7 @@
-import { CtripApplloClient, value, hotValue } from 'ctrip-apollo-client';
+import { CtripApolloClient, value, hotValue } from 'ctrip-apollo-client';
 import Koa from 'koa';
 
-const apollo = new CtripApplloClient({
+const apollo = new CtripApolloClient({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
     configPath: './config/apolloConfig.json',

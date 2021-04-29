@@ -1,8 +1,8 @@
-const { CtripApplloClient, withValue } = require('../../src/index')
+const { CtripApolloClient, withValue } = require('../../src/index')
 const Koa = require('koa')
 const app = new Koa()
 
-const apollo = new CtripApplloClient({
+const apollo = new CtripApolloClient({
     configServerUrl: 'http://106.54.227.205:8080',
     appId: 'apolloclient',
     configPath: './config/apolloConfig.json',
