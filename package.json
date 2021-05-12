@@ -44,5 +44,9 @@
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lvgithub/ctrip-apollo-client"
   }
 }
