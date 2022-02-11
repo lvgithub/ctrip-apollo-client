@@ -1,6 +1,6 @@
 {
   "name": "@lvgithub/ctrip-apollo-client",
-  "version": "1.0.26",
+  "version": "1.0.29",
   "description": "携程配置中心 Apollo 客户端Node.js版本",
   "main": "src/index.js",
   "types": "./typings/ctripApolloClient.d.ts",
