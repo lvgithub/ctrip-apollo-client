@@ -11,7 +11,7 @@ const apollo = new CtripApolloClient({
 
 class User {
     constructor () {
-        withValue(this, 'userId', 'user.id:10071')
+      apollo.withValue(this, 'userId', 'user.id:10071')
     }
 }
 
