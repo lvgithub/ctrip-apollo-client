@@ -57,6 +57,11 @@ class Client {
             this.clientIp = clientIp
         })
 
+        this.readyPromise = new Promise((resolve, reject) => {
+          this.resolve = resolve;
+          this.reject = reject;
+        })
+
         // 实现long http polling
         // 递归害怕长时间运行有爆栈的危险
         // this.polling = async () => {
@@ -76,6 +81,8 @@ class Client {
         }, 1)
 
         global._apollo = this
+
+        this.init()
     }
 
     async refreshServerUrl () {
@@ -249,6 +256,10 @@ class Client {
         return configObj
     }
 
+    ready() {
+      return this.readyPromise;
+    }
+
     // 拉取所有配置到本地
     async init (initTimeoutMs) {
         try {
@@ -259,9 +270,11 @@ class Client {
                 this.fetchConfigFromDb(),
                 reject(initTimeoutMs || this.initTimeoutMs)
             ])
+            this.resolve();
         } catch (error) {
             // 初始化失败，恢复本地配置文件
             this.error('error', error)
+            this.reject(error)
             this.apolloConfig = this.readConfigsFromFile()
         }
     }

@@ -1,4 +1,4 @@
-const { CtripApolloClient, withValue } = require('../../src/index')
+const { CtripApolloClient } = require('../../src/index')
 const Koa = require('koa')
 const app = new Koa()
 

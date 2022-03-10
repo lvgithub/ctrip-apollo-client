@@ -5,6 +5,7 @@ const client = new CtripApolloClient({
     accessKey: '35be8a4868c748ec96faef3e326adad5',
     configPath: './config/apolloConfig.json'
 })
+
 test('test getValue,getConfigs', () => {
     const config = {
         application: {
@@ -52,6 +53,32 @@ test('test readConfigsFromFile', async () => {
     // console.log('config', JSON.stringify(client.apolloConfig))
 
     expect(config).toEqual(client.apolloConfig)
+})
+
+test('test apollo ready ok', async () => {
+  const client = new CtripApolloClient({
+    metaServerUrl: 'http://106.54.227.205:8080',
+    appId: 'apolloclient',
+    accessKey: '35be8a4868c748ec96faef3e326adad5',
+    configPath: './config/apolloConfig.json',
+    initTimeoutMs: 1000
+  });
+
+  const res  = await client.ready();
+  expect(res).toBeUndefined()
+})
+
+test('test apollo ready failed', async () => {
+  const client = new CtripApolloClient({
+    metaServerUrl: 'http://106.54.227.2:8080',
+    appId: 'apolloclient',
+    accessKey: '35be8a4868c748ec96faef3e326adad5',
+    configPath: './config/apolloConfig.json',
+    initTimeoutMs: 1000
+  });
+
+  const err = await client.ready().catch((err) => err)
+  expect(err instanceof Error).toBeTruthy()
 })
 
 // test('test static value', () => {
