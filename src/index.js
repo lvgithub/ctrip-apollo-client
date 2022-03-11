@@ -58,8 +58,8 @@ class Client {
         })
 
         this.readyPromise = new Promise((resolve, reject) => {
-          this.resolve = resolve;
-          this.reject = reject;
+            this.resolve = resolve
+            this.reject = reject
         })
 
         // 实现long http polling
@@ -191,7 +191,9 @@ class Client {
         const url = `${this.configServerUrl}/notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}`
 
         try {
+            this.info('pollingNotification start time:')
             const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) })
+            this.info('pollingNotification end time:')
             const data = res.data
             if (data) {
                 for (const item of data) {
@@ -200,6 +202,7 @@ class Client {
                 }
             }
         } catch (error) {
+            this.info('pollingNotification end time:')
             if (+get(error, 'response.status') === 304) {
                 return
             }
@@ -256,8 +259,8 @@ class Client {
         return configObj
     }
 
-    ready() {
-      return this.readyPromise;
+    ready () {
+        return this.readyPromise
     }
 
     // 拉取所有配置到本地
@@ -270,7 +273,7 @@ class Client {
                 this.fetchConfigFromDb(),
                 reject(initTimeoutMs || this.initTimeoutMs)
             ])
-            this.resolve();
+            this.resolve()
         } catch (error) {
             // 初始化失败，恢复本地配置文件
             this.error('error', error)
