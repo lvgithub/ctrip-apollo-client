@@ -26,12 +26,16 @@ class Client {
             onChange,
             logger
         } = option
+        if(!metaServerUrl && !configServerUrl) {
+          throw new Error('configServerUrl and metaServerUrl can not all be empty')
+        }
+
         // 初始化超时
         this.initTimeoutMs = initTimeoutMs || 10000
         // 有配置更新回调
         this.onPolling = onChange
         // this.pollingIntervalMs = pollingIntervalMs || 1000 * 60;
-        this.apolloConfig = {}
+        this.apolloConfig = {} 
         this.configServerUrl = configServerUrl
         this.metaServerUrl = metaServerUrl
         this.appId = appId

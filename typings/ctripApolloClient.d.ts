@@ -5,10 +5,12 @@ interface Option {
     metaServerUrl?: string
     configServerUrl?: string
     appId: string
+    clusterName?: string
+    namespaceList?: StringArray
     accessKey?: string
     configPath?: string
-    namespaceList?: StringArray
-    clusterName?: string
+    initTimeoutMs?: number
+    onChange?: function
     logger?: object
 }
 export class value {
@@ -24,6 +26,7 @@ export declare class CtripApolloClient {
     getConfigs(): Promise<any>
     getValue(field: string, namespace?: string): string
     onChange(callback: (obj: any) => void): void
+    ready(): Promise<any>
 }
 
 export function value(field: string, namespace?: string): value

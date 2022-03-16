@@ -6,6 +6,18 @@ const client = new CtripApolloClient({
     configPath: './config/apolloConfig.json'
 })
 
+test('test configServerUrl and metaServerUrl all be empty', () => {
+  try {
+    new CtripApolloClient({
+      appId: 'apolloclient',
+      accessKey: '35be8a4868c748ec96faef3e326adad5',
+      configPath: './config/apolloConfig.json'
+    })
+  } catch (error) {
+    expect(error instanceof Error).toBeTruthy()
+  }
+})
+
 test('test getValue,getConfigs', () => {
     const config = {
         application: {
@@ -80,6 +92,7 @@ test('test apollo ready failed', async () => {
   const err = await client.ready().catch((err) => err)
   expect(err instanceof Error).toBeTruthy()
 })
+
 
 // test('test static value', () => {
 //     class User {
