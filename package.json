@@ -1,6 +1,6 @@
 {
     "name": "@lvgithub/ctrip-apollo-client",
-    "version": "1.0.36",
+    "version": "1.0.37",
     "description": "携程配置中心 Apollo 客户端Node.js版本",
     "main": "src/index.js",
     "types": "./typings/ctripApolloClient.d.ts",
@@ -48,7 +48,8 @@
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-standard": "^4.0.1",
         "jest": "^27.0.0-next.1",
-        "loglevel": "^1.6.8"
+        "loglevel": "^1.6.8",
+        "prettier": "^2.7.1"
     },
     "jest": {
         "testEnvironment": "node"
