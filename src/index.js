@@ -10,8 +10,11 @@ const crypto = require('crypto')
 
 const logPreStr = 'apollo-client: '
 
-const sleep = ms => new Promise(resolve => setTimeout(() => resolve(), ms))
-const reject = ms => new Promise((resolve, reject) => setTimeout(() => reject(new Error('request time out')), ms))
+const sleep = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
+const reject = (ms) =>
+    new Promise((resolve, reject) =>
+        setTimeout(() => reject(new Error('request time out')), ms)
+    )
 class Client {
     constructor (option) {
         const {
@@ -26,16 +29,20 @@ class Client {
             onChange,
             logger
         } = option
-        if(!metaServerUrl && !configServerUrl) {
-          throw new Error('configServerUrl and metaServerUrl can not all be empty')
+        if (!metaServerUrl && !configServerUrl) {
+            throw new Error(
+                'configServerUrl and metaServerUrl can not all be empty'
+            )
         }
+
+        this.isPoll = true
 
         // 初始化超时
         this.initTimeoutMs = initTimeoutMs || 10000
         // 有配置更新回调
         this.onPolling = onChange
         // this.pollingIntervalMs = pollingIntervalMs || 1000 * 60;
-        this.apolloConfig = {} 
+        this.apolloConfig = {}
         this.configServerUrl = configServerUrl
         this.metaServerUrl = metaServerUrl
         this.appId = appId
@@ -52,18 +59,18 @@ class Client {
             debug(logPreStr, ...args)
             logger && logger.error && logger.error(logPreStr + args.join(' '))
         }
-        this.namespaceList.forEach(item => {
+        this.namespaceList.forEach((item) => {
             this.notifications[item] = -1
         })
 
-        internalIp.v4().then(clientIp => {
+        internalIp.v4().then((clientIp) => {
             this.info('clientIp', clientIp)
             this.clientIp = clientIp
         })
 
         this.readyPromise = new Promise((resolve, reject) => {
-          this.resolve = resolve;
-          this.reject = reject;
+            this.resolve = resolve
+            this.reject = reject
         })
 
         // 实现long http polling
@@ -94,7 +101,9 @@ class Client {
             return
         }
         try {
-            const { data } = await axios.get(`${this.metaServerUrl}/services/config`)
+            const { data } = await axios.get(
+                `${this.metaServerUrl}/services/config`
+            )
             const len = data.length - 1
             const seed = Math.floor(Math.random() * len)
             const url = data[seed].homepageUrl
@@ -104,10 +113,20 @@ class Client {
         }
     }
 
+    // 停止循环
+    async stop () {
+        this.isPoll = false
+    }
+
+    // 检测是否已经连上apollo
+    ready () {
+        return this.readyPromise
+    }
+
     async polling () {
         let pollingCount = 1
 
-        while (true) {
+        while (this.isPoll) {
             this.info('polling count:', pollingCount++)
             await this.refreshServerUrl()
             try {
@@ -123,13 +142,15 @@ class Client {
     async fetchConfigFromCache () {
         const urlList = []
         const config = {}
-        this.namespaceList.map(namespace => {
+        this.namespaceList.map((namespace) => {
             const url = `${this.configServerUrl}/configfiles/json/${this.appId}/${this.clusterName}/${namespace}?ip=${this.clientIp}`
             urlList.push({ namespace, url })
         })
         for (const item of urlList) {
             try {
-                const res = await axios.get(item.url, { headers: this.genAuthHeaders(item.url, this.accessKey) })
+                const res = await axios.get(item.url, {
+                    headers: this.genAuthHeaders(item.url, this.accessKey)
+                })
                 config[item.namespace] = res.data
             } catch (error) {
                 this.error('fetchConfigFromCache error:', error)
@@ -144,13 +165,19 @@ class Client {
             config && config[namespace] && config[namespace].releaseKey
         const url = `${this.configServerUrl}/configs/${this.appId}/${this.clusterName}/${namespace}?releaseKey=${releaseKey}&ip=${this.clientIp}`
         try {
-            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) })
+            const res = await axios.get(url, {
+                headers: this.genAuthHeaders(url, this.accessKey)
+            })
             config[namespace] = res.data
         } catch (error) {
             if (+get(error, 'response.status') === 304) {
                 return
             }
-            this.error('fetchConfigFromDbByNamespace error:', error.message, url)
+            this.error(
+                'fetchConfigFromDbByNamespace error:',
+                error.message,
+                url
+            )
         }
         // this.apolloConfig = config;
         this.saveConfigsToFile(config)
@@ -160,13 +187,15 @@ class Client {
     async fetchConfigFromDb () {
         const urlList = []
         const config = {}
-        this.namespaceList.map(namespace => {
+        this.namespaceList.map((namespace) => {
             const url = `${this.configServerUrl}/configs/${this.appId}/${this.clusterName}/${namespace}?ip=${this.clientIp}`
             urlList.push({ namespace, url })
         })
         for (const item of urlList) {
             try {
-                const res = await axios.get(item.url, { headers: this.genAuthHeaders(item.url, this.accessKey) })
+                const res = await axios.get(item.url, {
+                    headers: this.genAuthHeaders(item.url, this.accessKey)
+                })
                 config[item.namespace] = res.data
             } catch (error) {
                 debug('fetchConfigFromDb error:', error.message)
@@ -183,7 +212,7 @@ class Client {
     async pollingNotification () {
         this.info('pollingNotification start')
         const notifications = JSON.stringify(
-            Object.keys(this.notifications).map(namespace => {
+            Object.keys(this.notifications).map((namespace) => {
                 return {
                     namespaceName: namespace,
                     notificationId: this.notifications[namespace]
@@ -195,7 +224,9 @@ class Client {
         const url = `${this.configServerUrl}/notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}`
 
         try {
-            const res = await axios.get(url, { headers: this.genAuthHeaders(url, this.accessKey) })
+            const res = await axios.get(url, {
+                headers: this.genAuthHeaders(url, this.accessKey)
+            })
             const data = res.data
             if (data) {
                 for (const item of data) {
@@ -260,8 +291,8 @@ class Client {
         return configObj
     }
 
-    ready() {
-      return this.readyPromise;
+    ready () {
+        return this.readyPromise
     }
 
     // 拉取所有配置到本地
@@ -274,7 +305,7 @@ class Client {
                 this.fetchConfigFromDb(),
                 reject(initTimeoutMs || this.initTimeoutMs)
             ])
-            this.resolve();
+            this.resolve()
         } catch (error) {
             // 初始化失败，恢复本地配置文件
             this.error('error', error)
@@ -361,10 +392,12 @@ class Client {
     genAuthHeaders (reqUrl, secret) {
         const Timestamp = Date.now()
         const Authorization = this.genSignature(reqUrl, Timestamp, secret)
-        return secret ? {
-            Authorization,
-            Timestamp
-        } : {}
+        return secret
+            ? {
+                Authorization,
+                Timestamp
+            }
+            : {}
     }
 
     /**
@@ -377,7 +410,10 @@ class Client {
      */
     genSignature (url, timestamp, secret) {
         const hmac = crypto.createHmac('sha1', secret)
-        const signature = hmac.update(`${timestamp}\n${this.url2PathWithQuery(url)}`).digest().toString('base64')
+        const signature = hmac
+            .update(`${timestamp}\n${this.url2PathWithQuery(url)}`)
+            .digest()
+            .toString('base64')
         return `Apollo ${this.appId}:${signature}`
     }
 
