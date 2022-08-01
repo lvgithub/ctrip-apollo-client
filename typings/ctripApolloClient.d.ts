@@ -27,6 +27,7 @@ export declare class CtripApolloClient {
     getValue(field: string, namespace?: string): string
     onChange(callback: (obj: any) => void): void
     ready(): Promise<any>
+    stop(): void
 }
 
 export function value(field: string, namespace?: string): value

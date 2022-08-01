@@ -114,7 +114,7 @@ class Client {
     }
 
     // 停止循环
-    async stop () {
+    stop () {
         this.isPoll = false
     }
 
