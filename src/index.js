@@ -224,9 +224,11 @@ class Client {
         const url = `${this.configServerUrl}/notifications/v2?appId=${this.appId}&cluster=${this.clusterName}&notifications=${notificationsEncode}`
 
         try {
+            this.info('pollingNotification start time:')
             const res = await axios.get(url, {
                 headers: this.genAuthHeaders(url, this.accessKey)
             })
+            this.info('pollingNotification end time:')
             const data = res.data
             if (data) {
                 for (const item of data) {
@@ -235,6 +237,7 @@ class Client {
                 }
             }
         } catch (error) {
+            this.info('pollingNotification end time:')
             if (+get(error, 'response.status') === 304) {
                 return
             }
