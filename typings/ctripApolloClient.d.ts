@@ -1,7 +1,7 @@
 interface StringArray {
     [index: number]: string;
 }
-interface Option {
+export interface Option {
     metaServerUrl?: string
     configServerUrl?: string
     appId: string
