@@ -10,7 +10,7 @@ export interface Option {
     accessKey?: string
     configPath?: string
     initTimeoutMs?: number
-    onChange?: function
+    onChange?: Function
     logger?: object
 }
 export class value {
