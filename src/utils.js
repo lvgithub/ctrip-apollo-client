@@ -10,4 +10,4 @@ const axios = require('axios')
 //     return Promise.reject(error)
 // })
 
-exports.axios = axios.default
+exports.axios = axios
