@@ -5,7 +5,7 @@ const set = require('set-value')
 const get = require('get-value')
 const fs = require('fs')
 const path = require('path')
-const internalIp = require('internal-ip')
+const { networkInterfaces } = require('os');
 const crypto = require('crypto')
 
 const logPreStr = 'apollo-client: '
@@ -63,10 +63,6 @@ class Client {
             this.notifications[item] = -1
         })
 
-        internalIp.v4().then((clientIp) => {
-            this.info('clientIp', clientIp)
-            this.clientIp = clientIp
-        })
 
         this.readyPromise = new Promise((resolve, reject) => {
             this.resolve = resolve
@@ -302,7 +298,7 @@ class Client {
     async init (initTimeoutMs) {
         try {
             await this.refreshServerUrl()
-            const ip = await internalIp.v4()
+            const ip = await this.getIpv4();
             this.clientIp = ip
             await Promise.race([
                 this.fetchConfigFromDb(),
@@ -316,6 +312,30 @@ class Client {
             this.apolloConfig = this.readConfigsFromFile()
         }
     }
+
+    /**
+     * 获取ipv4地址
+     * @returns 
+     */
+    async getIpv4() {
+        const nets = networkInterfaces();
+        const results = Object.create(null); // Or just '{}', an empty object
+    
+        for (const name of Object.keys(nets)) {
+          for (const net of nets[name]) {
+            // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+            // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
+            const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4;
+            if (net.family === familyV4Value && !net.internal) {
+              if (!results[name]) {
+                results[name] = [];
+              }
+              results[name].push(net.address);
+            }
+          }
+        }
+        return results['eth0'][0];
+      }
 
     getConfigs () {
         this.info('getConfigs: ', JSON.stringify(this.apolloConfig))
